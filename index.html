@@ -164,21 +164,28 @@
                         ar-placement="floor"
                         class="w-full h-full"
                     >
-                        <button id="default-ar-button" slot="ar-button" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-brand-gold text-black px-8 py-4 rounded-sm font-bold shadow-[0_0_30px_rgba(212,175,55,0.6)] flex items-center gap-3 hover:bg-white transition-all uppercase tracking-widest text-sm z-50 animate-bounce cursor-pointer whitespace-nowrap">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span>Відкрити камеру</span>
+                        <button id="default-ar-button" slot="ar-button" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-brand-gold text-black px-8 py-4 rounded-sm font-bold shadow-[0_0_30px_rgba(212,175,55,0.6)] flex items-center gap-3 hover:bg-white transition-all uppercase tracking-widest text-sm z-50 animate-bounce cursor-pointer whitespace-nowrap hidden">
+                            <!-- Native button hidden, we use custom one -->
                         </button>
                     </model-viewer>
                     
                     <!-- AR Loading Overlay (Outside model-viewer for correct stacking) -->
                     <div id="ar-overlay" class="absolute inset-0 bg-black/90 z-40 flex flex-col items-center justify-center text-center p-6 hidden backdrop-blur-md transition-opacity duration-300 pointer-events-auto">
+                        <!-- Loading State -->
                         <div id="ar-loading" class="flex flex-col items-center gap-4">
                             <div class="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
                             <p class="text-brand-gold font-bold uppercase tracking-widest text-sm">Завантаження 3D моделі...</p>
                         </div>
+
+                        <!-- Ready State (Custom Button) -->
+                        <button id="ar-start-btn" class="hidden transform scale-125 bg-brand-gold text-black px-8 py-4 rounded-sm font-bold shadow-[0_0_30px_rgba(212,175,55,0.5)] flex items-center gap-3 hover:bg-white transition-all uppercase tracking-widest text-sm animate-bounce z-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>Відкрити камеру</span>
+                        </button>
+                        
                         <button onclick="closeArOverlay()" class="absolute bottom-10 text-gray-500 hover:text-white text-xs underline decoration-dotted z-50">Скасувати</button>
                     </div>
                 </div>
@@ -320,6 +327,7 @@
 
         const arOverlay = document.getElementById('ar-overlay');
         const arLoading = document.getElementById('ar-loading');
+        const arStartBtn = document.getElementById('ar-start-btn');
         const defaultArBtn = document.getElementById('default-ar-button');
 
         let isAutoAR = false;
@@ -332,12 +340,15 @@
             // 2. Show Overlay (Loading state)
             arOverlay.classList.remove('hidden');
             arLoading.classList.remove('hidden');
+            arStartBtn.classList.add('hidden'); // Ensure button is hidden initially
 
-            // 3. Safety Timeout: If model takes too long (or event missed), hide overlay anyway
-            // This prevents the "infinite spinner" issue
+            // 3. Safety Timeout: If model takes too long, force show the button
             setTimeout(() => {
-                console.log("Safety timeout reached, hiding overlay");
-                arOverlay.classList.add('hidden');
+                if (!arOverlay.classList.contains('hidden')) {
+                     console.log("Safety timeout reached, showing button manually");
+                     arLoading.classList.add('hidden');
+                     arStartBtn.classList.remove('hidden');
+                }
             }, 3000); // 3 seconds max wait
         };
 
@@ -346,16 +357,26 @@
             isAutoAR = false;
         };
 
+        // Custom Button Click Handler
+        arStartBtn.onclick = () => {
+            if (modalViewer.canActivateAR) {
+                modalViewer.activateAR();
+                closeArOverlay();
+            } else {
+                alert("Ваш браузер або пристрій не підтримує AR. Спробуйте оновити Chrome або Safari.");
+                console.log("AR not supported on this device/browser");
+                closeArOverlay();
+            }
+        };
+
         // Listen for model load to update UI
         modalViewer.addEventListener('load', () => {
             if (isAutoAR) {
-                console.log("Model loaded, hiding overlay to show native button");
+                console.log("Model loaded, showing Custom AR button");
                 
-                // Hide the custom overlay completely
-                // The native button (slot="ar-button") will now be visible automatically by model-viewer
-                setTimeout(() => {
-                    arOverlay.classList.add('hidden');
-                }, 500); 
+                // Instead of hiding overlay, we switch content
+                arLoading.classList.add('hidden');
+                arStartBtn.classList.remove('hidden');
             }
         });
 
