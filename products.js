@@ -53,11 +53,11 @@ export const products = [
     price: "18 000 грн",
     description: "Міцна металева конструкція для підтримки виноградної лози. Створює затишну тінь та прикрашає ділянку.",
     image: "https://placehold.co/600x400/1a1a1a/D4AF37?text=Vineyard",
-    baseModel: "./ВинограднікGrey.glb",
+    baseModel: "./vineyard_grey.glb",
     variants: {
-      grey: "./ВинограднікGrey.glb",
-      black: "./ВинограднікBlack.glb",
-      graphite: "./ВинограднікGraphit.glb?v=2"
+      grey: "./vineyard_grey.glb",
+      black: "./vineyard_black.glb",
+      graphite: "./vineyard_graphite.glb?v=2"
     }
   },
   {
@@ -66,9 +66,9 @@ export const products = [
     price: "12 000 грн",
     description: "Стильний та надійний козирок для захисту входу від опадів. Металевий каркас, сучасний дизайн.",
     image: "https://placehold.co/600x400/1a1a1a/D4AF37?text=Visor",
-    baseModel: "./Козирьок.glb",
+    baseModel: "./visor.glb",
     variants: {
-      standard: "./Козирьок.glb"
+      standard: "./visor.glb"
     }
   },
   {
@@ -77,9 +77,9 @@ export const products = [
     price: "55 000 грн",
     description: "Просторий навіс для автомобіля або зони відпочинку. Оптимальний розмір 5 на 4 метри для будь-якої ділянки.",
     image: "https://placehold.co/600x400/1a1a1a/D4AF37?text=Carport+5x4",
-    baseModel: "./Навес5на4м.glb",
+    baseModel: "./carport_5x4.glb",
     variants: {
-      standard: "./Навес5на4м.glb"
+      standard: "./carport_5x4.glb"
     }
   },
   {
@@ -88,9 +88,9 @@ export const products = [
     price: "48 000 грн",
     description: "Класичний односхилий навіс. Лаконічний дизайн, простота монтажу та надійність конструкції.",
     image: "https://placehold.co/600x400/1a1a1a/D4AF37?text=Single+Slope",
-    baseModel: "./навес односкатныйglb.glb",
+    baseModel: "./single_slope_carport.glb",
     variants: {
-      standard: "./навес односкатныйglb.glb"
+      standard: "./single_slope_carport.glb"
     }
   }
 ];
