@@ -164,12 +164,29 @@
                         ar-placement="floor"
                         class="w-full h-full"
                     >
-                        <button slot="ar-button" class="absolute bottom-8 right-8 bg-brand-gold text-black px-6 py-3 rounded-sm font-bold shadow-[0_10px_20px_rgba(0,0,0,0.3)] flex items-center gap-3 hover:bg-white transition-all uppercase tracking-widest text-sm">
+                        <button slot="ar-button" class="absolute bottom-8 right-8 bg-brand-gold text-black px-6 py-3 rounded-sm font-bold shadow-[0_10px_20px_rgba(0,0,0,0.3)] flex items-center gap-3 hover:bg-white transition-all uppercase tracking-widest text-sm z-20">
                             <span>Переглянути в AR</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" clip-rule="evenodd" />
                             </svg>
                         </button>
+                        
+                        <!-- AR Overlay for Quick Start -->
+                        <div id="ar-overlay" class="absolute inset-0 bg-black/80 z-30 flex flex-col items-center justify-center text-center p-6 hidden backdrop-blur-sm transition-opacity duration-300">
+                            <div id="ar-loading" class="flex flex-col items-center gap-4">
+                                <div class="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
+                                <p class="text-brand-gold font-bold uppercase tracking-widest text-sm">Завантаження 3D моделі...</p>
+                            </div>
+                            <button id="ar-start-btn" class="hidden bg-brand-gold text-black px-8 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-[0_0_30px_rgba(212,175,55,0.4)] flex items-center gap-3 text-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                Відкрити камеру
+                            </button>
+                            <p class="mt-8 text-gray-400 text-xs max-w-xs font-light">Наведіть камеру на підлогу, щоб розмістити об'єкт</p>
+                            <button onclick="closeArOverlay()" class="mt-4 text-gray-500 hover:text-white text-xs underline decoration-dotted">Скасувати</button>
+                        </div>
                     </model-viewer>
                 </div>
 
@@ -308,34 +325,52 @@
             document.body.style.overflow = 'hidden'; // Disable background scroll
         };
 
+        const arOverlay = document.getElementById('ar-overlay');
+        const arLoading = document.getElementById('ar-loading');
+        const arStartBtn = document.getElementById('ar-start-btn');
+
         let isAutoAR = false;
 
         window.quickAR = (id) => {
-            // Open modal normally first
+            // 1. Open modal
             isAutoAR = true;
             window.openProductModal(id);
+            
+            // 2. Show Overlay immediately
+            arOverlay.classList.remove('hidden');
+            arLoading.classList.remove('hidden');
+            arStartBtn.classList.add('hidden');
         };
 
-        // Listen for model load to trigger AR
+        window.closeArOverlay = () => {
+            arOverlay.classList.add('hidden');
+            isAutoAR = false;
+        };
+
+        // Trigger AR when button clicked
+        arStartBtn.onclick = () => {
+            if (modalViewer.canActivateAR) {
+                modalViewer.activateAR();
+                closeArOverlay(); // Hide overlay so if they come back, they see the model
+            }
+        };
+
+        // Listen for model load to update UI
         modalViewer.addEventListener('load', () => {
             if (isAutoAR) {
-                isAutoAR = false;
-                console.log("Model loaded, attempting to enter AR...");
+                console.log("Model loaded, ready for AR");
                 
-                // Small delay to ensure rendering is stable
+                // Switch overlay to "Ready" state
                 setTimeout(() => {
-                    if (modalViewer.canActivateAR) {
-                        modalViewer.activateAR();
-                    } else {
-                        console.log("AR not available on this device/browser");
-                        // Fallback: Just stay in 3D viewer (modal is already open)
-                    }
-                }, 500);
+                    arLoading.classList.add('hidden');
+                    arStartBtn.classList.remove('hidden');
+                }, 500); // Small cosmetic delay
             }
         });
 
         window.closeModal = () => {
             modal.classList.add('hidden');
+            closeArOverlay(); // Ensure overlay is reset
             document.body.style.overflow = ''; // Enable background scroll
         };
 
