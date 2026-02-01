@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ветеран-Майстер | Преміальні металоконструкції</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Model Viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            gold: '#D4AF37', // Gold accent
+                            dark: '#1a1a1a', // Deep Graphite
+                            surface: '#262626', // Lighter graphite for cards
+                            text: '#f3f4f6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #1a1a1a;
+            color: #f3f4f6;
+        }
+        
+        /* Glassmorphism utilities */
+        .glass {
+            background: rgba(38, 38, 38, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #404040;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            background-color: #1a1a1a;
+            border-radius: 0.5rem;
+            --poster-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-gold selection:text-black">
+
+    <!-- Header -->
+    <header class="fixed w-full bg-[#1a1a1a]/90 backdrop-blur-md border-b border-white/5 z-40">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold tracking-wider text-white flex items-center gap-3">
+                <img src="./photo_2026-01-30_16-55-34.jpg" alt="Ветеран-Майстер" class="w-10 h-10 rounded object-cover shadow-[0_0_15px_rgba(212,175,55,0.4)]" />
+                <span class="tracking-[0.15em]">ВЕТЕРАН-МАЙСТЕР</span>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-xs font-bold tracking-widest uppercase">
+                <a href="#catalog" class="hover:text-brand-gold transition-colors duration-300">Каталог</a>
+                <a href="#" class="hover:text-brand-gold transition-colors duration-300">Технології</a>
+                <a href="#" class="hover:text-brand-gold transition-colors duration-300">Портфоліо</a>
+                <a href="#" class="hover:text-brand-gold transition-colors duration-300">Контакти</a>
+            </nav>
+            <button class="bg-brand-gold text-black px-6 py-2 rounded-sm font-bold text-xs uppercase tracking-widest hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+                Залишити заявку
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-24 overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <div class="inline-block mb-4 px-3 py-1 border border-brand-gold/30 rounded-full bg-brand-gold/10 text-brand-gold text-xs font-bold tracking-[0.2em] uppercase">
+                Преміальні металеві конструкції
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-8 tracking-tight text-white leading-tight">
+                СТАЛЕВИЙ ХАРАКТЕР<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-yellow-200 to-brand-gold">ВАШОЇ ДІЛЯНКИ</span>
+            </h1>
+            <p class="text-lg text-gray-400 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+                Проєктування та виробництво навісів, ангарів і воріт преміум-класу. 
+                Інтерактивний 3D‑конфігуратор із підтримкою доповненої реальності.
+            </p>
+            <div class="flex justify-center gap-6">
+                <a href="#catalog" class="bg-brand-gold text-black px-10 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300">
+                    Обрати модель
+                </a>
+            </div>
+        </div>
+        <!-- Background Elements -->
+        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-full pointer-events-none z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-brand-gold/5 via-transparent to-[#1a1a1a]"></div>
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-gold/10 rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-[100px]"></div>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section id="catalog" class="py-24 bg-[#1a1a1a] relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 uppercase tracking-widest">Колекція 2024</h2>
+                <div class="w-16 h-0.5 bg-brand-gold mx-auto"></div>
+            </div>
+            
+            <!-- Products Grid -->
+            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Products will be inserted here by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal / Configurator -->
+    <div id="product-modal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="glass rounded-none w-full max-w-7xl h-[90vh] flex flex-col md:flex-row overflow-hidden border border-white/10 relative shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                
+                <!-- Close Button -->
+                <button onclick="closeModal()" class="absolute top-6 right-6 z-20 text-white hover:text-brand-gold transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                <!-- Left: 3D Viewer -->
+                <div class="w-full md:w-2/3 bg-[#121212] relative">
+                    <model-viewer 
+                        id="modal-model-viewer"
+                        src=""
+                        ios-src=""
+                        poster="https://modelviewer.dev/assets/poster-astronaut.png"
+                        alt="3D model"
+                        shadow-intensity="1"
+                        camera-controls
+                        auto-rotate
+                        ar
+                        ar-modes="webxr scene-viewer quick-look"
+                        class="w-full h-full"
+                    >
+                        <button slot="ar-button" class="absolute bottom-8 right-8 bg-brand-gold text-black px-6 py-3 rounded-sm font-bold shadow-[0_10px_20px_rgba(0,0,0,0.3)] flex items-center gap-3 hover:bg-white transition-all uppercase tracking-widest text-sm">
+                            <span>Переглянути в AR</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </model-viewer>
+                </div>
+
+                <!-- Right: Configurator -->
+                <div class="w-full md:w-1/3 p-10 overflow-y-auto bg-[#1a1a1a] border-l border-white/5 flex flex-col">
+                    <div id="modal-content" class="flex-grow">
+                        <div class="mb-2 text-brand-gold text-xs font-bold uppercase tracking-[0.2em]">Конфігуратор</div>
+                        <h2 id="modal-title" class="text-3xl font-bold text-white mb-4 leading-tight">Назва товару</h2>
+                        <p id="modal-price" class="text-2xl text-brand-gold font-light mb-8">0 ₽</p>
+                        
+                        <div class="w-full h-px bg-white/10 mb-8"></div>
+
+                        <p id="modal-desc" class="text-gray-400 mb-10 leading-relaxed font-light text-sm">Опис...</p>
+
+                        <!-- Configurator Controls -->
+                        <div class="space-y-8 mb-12">
+                            <div>
+                                <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-4 flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-brand-gold rounded-full"></span>
+                                    Оберіть варіант
+                                </h3>
+                                
+                                <!-- Variant Selector (Buttons) -->
+                                <div id="config-options" class="grid grid-cols-1 gap-3">
+                                    <!-- Buttons populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto">
+                        <button class="w-full bg-white text-black py-5 rounded-sm font-bold hover:bg-brand-gold transition-colors duration-300 uppercase tracking-widest text-sm shadow-lg">
+                            Оформити заявку
+                        </button>
+                        
+                        <p class="mt-6 text-[10px] text-center text-gray-600 uppercase tracking-wider">
+                            *Вартість може змінюватися залежно від обраної конфігурації
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic Script -->
+    <script type="module">
+        import { products } from './products.js';
+
+        // 1. Render Catalog
+        const productsGrid = document.getElementById('products-grid');
+
+        function renderCatalog() {
+            productsGrid.innerHTML = products.map(product => `
+                <div class="glass rounded-sm overflow-hidden hover:border-brand-gold/50 transition-all duration-500 group relative">
+                    <div class="h-72 overflow-hidden relative">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-0 left-0 p-6 w-full">
+                            <h3 class="text-2xl font-bold text-white mb-1 tracking-tight">${product.name}</h3>
+                            <div class="w-12 h-1 bg-brand-gold mb-3 transform origin-left scale-0 group-hover:scale-100 transition-transform duration-500"></div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-2">
+                        <p class="text-gray-400 text-sm mb-6 line-clamp-2 font-light">${product.description}</p>
+                        <div class="flex justify-between items-center border-t border-white/5 pt-4">
+                            <span class="text-brand-gold font-medium text-lg">${product.price}</span>
+                            <button onclick="window.openProductModal(${product.id})" class="text-xs font-bold text-white uppercase tracking-widest hover:text-brand-gold transition-colors flex items-center gap-2">
+                                Конфігурація <span class="text-lg">→</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 2. Modal Logic
+        const modal = document.getElementById('product-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalPrice = document.getElementById('modal-price');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalViewer = document.getElementById('modal-model-viewer');
+        const configOptions = document.getElementById('config-options');
+
+        let currentProduct = null;
+
+        // Expose function to global scope so HTML onclick works
+        window.openProductModal = (id) => {
+            currentProduct = products.find(p => p.id === id);
+            if (!currentProduct) return;
+
+            // Populate Info
+            modalTitle.textContent = currentProduct.name;
+            modalPrice.textContent = currentProduct.price;
+            modalDesc.textContent = currentProduct.description;
+
+            // Populate Viewer
+            modalViewer.src = currentProduct.baseModel;
+            
+            // Populate Configurator Buttons
+            configOptions.innerHTML = '';
+            
+            // Generate friendly names for keys
+            const variantKeys = Object.keys(currentProduct.variants);
+            
+            if (variantKeys.length > 0) {
+                variantKeys.forEach((key, index) => {
+                    const btn = document.createElement('button');
+                    // Styling for buttons
+                    btn.className = `
+                        w-full text-left px-5 py-4 rounded-sm border transition-all duration-300 flex justify-between items-center group
+                        ${index === 0 ? 'border-brand-gold bg-brand-gold/10 text-white' : 'border-white/10 text-gray-400 hover:border-white/30 hover:text-white'}
+                    `;
+                    btn.innerHTML = `
+                        <span class="font-medium text-sm tracking-wide uppercase">${formatVariantName(key)}</span>
+                        <span class="w-2 h-2 rounded-full ${index === 0 ? 'bg-brand-gold' : 'bg-transparent group-hover:bg-white/20'}"></span>
+                    `;
+                    
+                    btn.onclick = () => selectVariant(key, btn);
+                    configOptions.appendChild(btn);
+                });
+            } else {
+                configOptions.innerHTML = '<div class="text-gray-500 text-sm italic">Немає доступних конфігурацій</div>';
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Disable background scroll
+        };
+
+        window.closeModal = () => {
+            modal.classList.add('hidden');
+            document.body.style.overflow = ''; // Enable background scroll
+        };
+
+        function selectVariant(key, clickedBtn) {
+            if (currentProduct && currentProduct.variants[key]) {
+                const newModelSrc = currentProduct.variants[key];
+                console.log(`Switching model to: ${newModelSrc}`);
+                
+                // Change the model
+                modalViewer.src = newModelSrc;
+
+                // Update UI state
+                const allBtns = configOptions.querySelectorAll('button');
+                allBtns.forEach(btn => {
+                    btn.className = 'w-full text-left px-5 py-4 rounded-sm border border-white/10 text-gray-400 hover:border-white/30 hover:text-white transition-all duration-300 flex justify-between items-center group';
+                    btn.querySelector('span:last-child').className = 'w-2 h-2 rounded-full bg-transparent group-hover:bg-white/20';
+                });
+
+                clickedBtn.className = 'w-full text-left px-5 py-4 rounded-sm border border-brand-gold bg-brand-gold/10 text-white transition-all duration-300 flex justify-between items-center group';
+                clickedBtn.querySelector('span:last-child').className = 'w-2 h-2 rounded-full bg-brand-gold';
+            }
+        }
+
+        // Helper to make variant keys readable
+        function formatVariantName(key) {
+            const names = {
+                'single_slope_left': 'Односхилий (Вліво)',
+                'single_slope_right': 'Односхилий (Вправо)',
+                'gable': 'Двосхилий (Будиночком)',
+                'hip': 'Чотирисхилий',
+                'standard': 'Стандартна версія',
+                'high_roof': 'Збільшена висота',
+                'grey': 'Колір: Сірий',
+                'black': 'Колір: Чорний',
+                'graphite': 'Колір: Графіт'
+            };
+            return names[key] || key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        // Initialize
+        renderCatalog();
+
+        // Close modal on Esc key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
