@@ -172,22 +172,16 @@
                         </button>
                         
                         <!-- AR Overlay for Quick Start -->
-                        <div id="ar-overlay" class="absolute inset-0 bg-black/90 z-50 flex flex-col items-center justify-center text-center p-6 hidden backdrop-blur-md transition-opacity duration-300">
+                        <div id="ar-overlay" class="absolute inset-0 bg-black/90 z-40 flex flex-col items-center justify-center text-center p-6 hidden backdrop-blur-md transition-opacity duration-300">
                             <div id="ar-loading" class="flex flex-col items-center gap-4">
                                 <div class="w-12 h-12 border-4 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
                                 <p class="text-brand-gold font-bold uppercase tracking-widest text-sm">Завантаження 3D моделі...</p>
                             </div>
                             
-                            <!-- Custom AR Start Button (Manual Trigger) -->
-                            <button id="ar-start-btn" class="hidden transform scale-125 bg-brand-gold text-black px-8 py-4 rounded-sm font-bold shadow-[0_0_30px_rgba(212,175,55,0.5)] flex items-center gap-3 hover:bg-white transition-all uppercase tracking-widest text-sm animate-bounce">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                <span>Відкрити камеру</span>
-                            </button>
+                            <!-- Hint text that appears when ready -->
+                            <p id="ar-ready-hint" class="hidden text-white font-bold text-lg animate-pulse mb-8">Натисніть кнопку, щоб відкрити камеру</p>
                             
-                            <button onclick="closeArOverlay()" class="absolute bottom-10 text-gray-500 hover:text-white text-xs underline decoration-dotted">Скасувати</button>
+                            <button onclick="closeArOverlay()" class="absolute bottom-10 text-gray-500 hover:text-white text-xs underline decoration-dotted z-50">Скасувати</button>
                         </div>
                     </model-viewer>
                 </div>
@@ -329,21 +323,10 @@
 
         const arOverlay = document.getElementById('ar-overlay');
         const arLoading = document.getElementById('ar-loading');
-        const arStartBtn = document.getElementById('ar-start-btn');
+        const arReadyHint = document.getElementById('ar-ready-hint');
         const defaultArBtn = document.getElementById('default-ar-button');
 
         let isAutoAR = false;
-
-        // Manual trigger for custom button
-        arStartBtn.onclick = () => {
-            console.log("Activating AR manually...");
-            if (modalViewer.canActivateAR) {
-                modalViewer.activateAR();
-            } else {
-                // Fallback attempt anyway
-                modalViewer.activateAR();
-            }
-        };
 
         window.quickAR = (id) => {
             // 1. Open modal
@@ -353,27 +336,56 @@
             // 2. Show Overlay
             arOverlay.classList.remove('hidden');
             arLoading.classList.remove('hidden');
-            arStartBtn.classList.add('hidden');
+            arReadyHint.classList.add('hidden');
+            
+            // 3. Prepare native button (hidden until loaded)
+            defaultArBtn.setAttribute('data-visible', 'false'); // Force hide initially
         };
 
         window.closeArOverlay = () => {
             arOverlay.classList.add('hidden');
             isAutoAR = false;
+            
+            // Reset button style to default (bottom right)
+            resetArButtonStyle();
         };
+
+        function resetArButtonStyle() {
+            defaultArBtn.className = "absolute bottom-8 right-8 bg-brand-gold text-black px-6 py-3 rounded-sm font-bold shadow-[0_10px_20px_rgba(0,0,0,0.3)] flex items-center gap-3 hover:bg-white transition-all uppercase tracking-widest text-sm z-40 opacity-0 pointer-events-none data-[visible=true]:opacity-100 data-[visible=true]:pointer-events-auto";
+        }
+
+        function setBigArButtonStyle() {
+            // Centered, Big, Bouncing
+            defaultArBtn.className = "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-brand-gold text-black px-8 py-4 rounded-sm font-bold shadow-[0_0_30px_rgba(212,175,55,0.5)] flex items-center gap-3 hover:bg-white transition-all uppercase tracking-widest text-sm z-50 animate-bounce opacity-100 pointer-events-auto";
+        }
 
         // Listen for model load to update UI
         modalViewer.addEventListener('load', () => {
-            // Always show the default slot button when loaded
-            defaultArBtn.setAttribute('data-visible', 'true');
-
             if (isAutoAR) {
                 console.log("Model loaded, ready for AR");
                 
                 // Switch overlay to "Ready" state
                 setTimeout(() => {
                     arLoading.classList.add('hidden');
-                    arStartBtn.classList.remove('hidden');
+                    arReadyHint.classList.remove('hidden');
+                    
+                    // Make the native button BIG and CENTERED
+                    setBigArButtonStyle();
+                    defaultArBtn.setAttribute('data-visible', 'true');
                 }, 500); 
+            } else {
+                // Normal mode: just show the regular button
+                resetArButtonStyle();
+                defaultArBtn.setAttribute('data-visible', 'true');
+            }
+        });
+
+        // Error handling
+        modalViewer.addEventListener('error', (error) => {
+            console.error("Model Viewer Error:", error);
+            if (isAutoAR) {
+                alert("Помилка завантаження моделі. Спробуйте пізніше.");
+                closeArOverlay();
             }
         });
 
