@@ -160,7 +160,7 @@
                         camera-controls
                         auto-rotate
                         ar
-                        ar-modes="scene-viewer webxr quick-look"
+                        ar-modes="webxr scene-viewer quick-look"
                         ar-placement="floor"
                         class="w-full h-full"
                     >
@@ -294,6 +294,14 @@
 
             // Populate Viewer
             modalViewer.src = currentProduct.baseModel;
+
+            // Настройка типа размещения AR
+            if (currentProduct.name.toLowerCase().includes('козирок') || 
+                currentProduct.name.toLowerCase().includes('visor')) {
+                modalViewer.setAttribute('ar-placement', 'wall');
+            } else {
+                modalViewer.setAttribute('ar-placement', 'floor');
+            }
             
             // Populate Configurator Buttons
             configOptions.innerHTML = '';
