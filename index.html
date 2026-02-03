@@ -231,9 +231,100 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="glass mt-12 py-8 border-t border-white/10 relative">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+            <p>&copy; 2026 Ветеран-Майстер. Усі права захищено.</p>
+            <p class="text-sm mt-2">Ми створюємо надійність, яку ви відчуваєте.</p>
+            
+            <!-- Admin Tools -->
+            <div class="mt-4 flex justify-center gap-4">
+                <button onclick="toggleEditMode()" class="px-4 py-2 bg-gray-800 rounded text-xs hover:bg-gray-700 transition">
+                    ✏️ Режим редагування
+                </button>
+                <button id="save-btn" onclick="exportChanges()" class="hidden px-4 py-2 bg-green-800 rounded text-xs hover:bg-green-700 transition">
+                    💾 Зберегти зміни (JSON)
+                </button>
+            </div>
+        </div>
+    </footer>
+
     <!-- Logic Script -->
     <script type="module">
         import { products } from './products.js?v=4';
+
+        // State & Admin Logic
+        let isEditMode = false;
+
+        window.toggleEditMode = () => {
+            isEditMode = !isEditMode;
+            const btn = document.querySelector('button[onclick="toggleEditMode()"]');
+            const saveBtn = document.getElementById('save-btn');
+            
+            btn.textContent = isEditMode ? "❌ Вийти з редагування" : "✏️ Режим редагування";
+            btn.classList.toggle('bg-red-800', isEditMode);
+            saveBtn.classList.toggle('hidden', !isEditMode);
+
+            // Select cards
+            const cards = document.querySelectorAll('#products-grid > div');
+            cards.forEach(card => {
+                const texts = card.querySelectorAll('h3, p.text-gray-400, span.text-brand-gold');
+                texts.forEach(t => {
+                    t.contentEditable = isEditMode;
+                    t.classList.toggle('border', isEditMode);
+                    t.classList.toggle('border-dashed', isEditMode);
+                    t.classList.toggle('border-brand-gold', isEditMode);
+                    t.classList.toggle('p-1', isEditMode);
+                });
+
+                const img = card.querySelector('img');
+                if (isEditMode) {
+                    img.style.cursor = "pointer";
+                    img.onclick = (e) => {
+                        e.stopPropagation();
+                        const newUrl = prompt("Введіть нове посилання на зображення:", img.src);
+                        if (newUrl) img.src = newUrl;
+                    };
+                } else {
+                    img.style.cursor = "";
+                    img.onclick = null;
+                }
+            });
+            
+            if (isEditMode) {
+                alert("Режим редагування увімкнено! Клікніть на текст для зміни, або на картинку для заміни URL.");
+            }
+        };
+
+        window.exportChanges = () => {
+            const cards = document.querySelectorAll('#products-grid > div');
+            const newProducts = [];
+            
+            cards.forEach((card) => {
+                const btn = card.querySelector('button[onclick^="window.quickAR"]');
+                let originalId = null;
+                if (btn) {
+                     const match = btn.getAttribute('onclick').match(/window\.quickAR\((\d+)\)/);
+                     if (match) originalId = parseInt(match[1]);
+                }
+
+                const originalProduct = products.find(p => p.id === originalId);
+                
+                if (originalProduct) {
+                    const newProduct = { ...originalProduct };
+                    newProduct.name = card.querySelector('h3').innerText;
+                    newProduct.description = card.querySelector('p.text-gray-400').innerText;
+                    newProduct.price = card.querySelector('span.text-brand-gold').innerText;
+                    newProduct.image = card.querySelector('img').getAttribute('src');
+                    newProducts.push(newProduct);
+                }
+            });
+
+            const json = JSON.stringify(newProducts, null, 2);
+            navigator.clipboard.writeText(`export const products = ${json};`)
+                .then(() => alert("JSON скопійовано в буфер обміну!"))
+                .catch(err => console.error("Failed to copy", err));
+        };
 
         // 1. Render Catalog
         const productsGrid = document.getElementById('products-grid');
@@ -287,21 +378,26 @@
             currentProduct = products.find(p => p.id === id);
             if (!currentProduct) return;
 
+            // Determine placement
+            const isWall = currentProduct.name.toLowerCase().includes('козирок') || 
+                           currentProduct.name.toLowerCase().includes('visor');
+
             // Populate Info
-            modalTitle.textContent = currentProduct.name;
+            modalTitle.innerHTML = `${currentProduct.name} <span class="text-xs bg-white/10 px-2 py-1 rounded ml-2 text-gray-400 font-normal tracking-normal align-middle">${isWall ? 'Кріплення: Стіна' : 'Кріплення: Підлога'}</span>`;
             modalPrice.textContent = currentProduct.price;
             modalDesc.textContent = currentProduct.description;
 
-            // Populate Viewer
-            modalViewer.src = currentProduct.baseModel;
-
             // Настройка типа размещения AR
-            if (currentProduct.name.toLowerCase().includes('козирок') || 
-                currentProduct.name.toLowerCase().includes('visor')) {
+            if (isWall) {
                 modalViewer.setAttribute('ar-placement', 'wall');
             } else {
                 modalViewer.setAttribute('ar-placement', 'floor');
             }
+            
+            // Populate Viewer
+            setTimeout(() => {
+                modalViewer.src = currentProduct.baseModel;
+            }, 50);
             
             // Populate Configurator Buttons
             configOptions.innerHTML = '';

@@ -76,7 +76,7 @@ export const products = [
     name: "Навіс 'Комфорт' 5х4м",
     price: "55 000 грн",
     description: "Просторий навіс для автомобіля або зони відпочинку. Оптимальний розмір 5 на 4 метри для будь-якої ділянки.",
-    image: "https://placehold.co/600x400/1a1a1a/D4AF37?text=Carport+5x4",
+    image: "./carport_5x4.png",
     baseModel: "./carport_5x4.glb",
     variants: {
       standard: "./carport_5x4.glb"
