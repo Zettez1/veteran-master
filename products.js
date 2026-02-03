@@ -65,7 +65,7 @@ export const products = [
     "name": "Козирок над ганком",
     "price": "12 000 грн",
     "description": "Стильний та надійний козирок для захисту входу від опадів. Металевий каркас, сучасний дизайн.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Visor",
+    "image": "./________.png",
     "baseModel": "./visor.glb",
     "variants": {
       "standard": "./visor.glb"
