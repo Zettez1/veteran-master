@@ -231,6 +231,27 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="glass mt-0 py-8 border-t border-white/10 relative z-30 bg-[#1a1a1a]">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+            <p class="text-xs uppercase tracking-widest mb-4">© 2024 Ветеран-Майстер. Усі права захищені.</p>
+            
+            <!-- Admin Tools -->
+            <div class="mt-4 flex justify-center gap-4 flex-wrap">
+                <button onclick="toggleEditMode()" class="bg-gray-800 text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-gray-700 transition-colors border border-white/10 shadow-lg">
+                    ✏️ Режим редагування
+                </button>
+                <button id="save-btn" onclick="exportChanges()" class="hidden bg-green-700 text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-green-600 transition-colors border border-white/10 shadow-[0_0_15px_rgba(0,255,0,0.3)] animate-pulse">
+                    💾 Зберегти зміни
+                </button>
+            </div>
+            <p class="mt-4 text-[10px] text-gray-600">
+                <span class="block mb-1">Режим адміністратора:</span>
+                Натисніть "Режим редагування", щоб змінити текст або фото.
+            </p>
+        </div>
+    </footer>
+
     <!-- Logic Script -->
     <script type="module">
         import { products as dbProducts } from './products.js?v=4';
