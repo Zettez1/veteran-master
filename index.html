@@ -339,7 +339,7 @@
             }
         };
 
-        window.exportChanges = () => {
+        window.exportChanges = async () => {
             const cards = document.querySelectorAll('#products-grid > div');
             const newProducts = [];
             
@@ -376,21 +376,44 @@
             const jsonStr = JSON.stringify(newProducts, null, 2);
             localStorage.setItem('veteran_products', jsonStr);
 
-            // 2. Download products.js file
+            // 2. Try File System Access API (Direct Save) or Download
             const fileContent = `export const products = ${jsonStr};`;
-            const blob = new Blob([fileContent], { type: 'text/javascript' });
-            const url = URL.createObjectURL(blob);
             
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'products.js';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            alert("✅ Зміни збережено!\n1. Сайт оновився у вашому браузері.\n2. Файл 'products.js' завантажено.\n👉 Замініть цим файлом старий файл у папці сайту, щоб зміни стали вічними.");
-            location.reload(); // Reload to apply changes from LocalStorage clean
+            try {
+                if (window.showSaveFilePicker) {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'products.js',
+                        types: [{
+                            description: 'JavaScript File',
+                            accept: { 'text/javascript': ['.js'] },
+                        }],
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(fileContent);
+                    await writable.close();
+                    alert("✅ Файл успішно оновлено! Тепер запустіть файл 'publish.bat' на робочому столі, щоб оновити сайт в інтернеті.");
+                } else {
+                    throw new Error("Not supported");
+                }
+            } catch (err) {
+                // Fallback to Download
+                const blob = new Blob([fileContent], { type: 'text/javascript' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'products.js';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                if (err.name !== 'AbortError') {
+                    alert("✅ Зміни збережено!\n1. Сайт оновився у вашому браузері.\n2. Файл 'products.js' завантажено.\n👉 Замініть цим файлом старий файл у папці сайту і запустіть 'publish.bat'.");
+                }
+            }
+            
+            location.reload(); // Reload to apply changes
         };
 
         // 1. Render Catalog
