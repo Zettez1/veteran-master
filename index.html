@@ -231,27 +231,22 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="glass mt-12 py-8 border-t border-white/10 relative">
-        <div class="container mx-auto px-4 text-center text-gray-400">
-            <p>&copy; 2026 Ветеран-Майстер. Усі права захищено.</p>
-            <p class="text-sm mt-2">Ми створюємо надійність, яку ви відчуваєте.</p>
-            
-            <!-- Admin Tools -->
-            <div class="mt-4 flex justify-center gap-4">
-                <button onclick="toggleEditMode()" class="px-4 py-2 bg-gray-800 rounded text-xs hover:bg-gray-700 transition">
-                    ✏️ Режим редагування
-                </button>
-                <button id="save-btn" onclick="exportChanges()" class="hidden px-4 py-2 bg-green-800 rounded text-xs hover:bg-green-700 transition">
-                    💾 Зберегти зміни (JSON)
-                </button>
-            </div>
-        </div>
-    </footer>
-
     <!-- Logic Script -->
     <script type="module">
-        import { products } from './products.js?v=4';
+        import { products as dbProducts } from './products.js?v=4';
+
+        // Initialize Products (Local Storage or Database)
+        let products = dbProducts;
+        const savedData = localStorage.getItem('veteran_products');
+        if (savedData) {
+            try {
+                products = JSON.parse(savedData);
+                console.log("Loaded products from LocalStorage");
+            } catch (e) {
+                console.error("Error parsing LocalStorage data", e);
+                products = dbProducts;
+            }
+        }
 
         // State & Admin Logic
         let isEditMode = false;
@@ -261,7 +256,7 @@
             const btn = document.querySelector('button[onclick="toggleEditMode()"]');
             const saveBtn = document.getElementById('save-btn');
             
-            btn.textContent = isEditMode ? "❌ Вийти з редагування" : "✏️ Режим редагування";
+            btn.textContent = isEditMode ? "❌ Вийти" : "✏️ Режим редагування";
             btn.classList.toggle('bg-red-800', isEditMode);
             saveBtn.classList.toggle('hidden', !isEditMode);
 
@@ -277,16 +272,15 @@
                     t.classList.toggle('p-1', isEditMode);
                 });
 
+                // Images logic (Overlay)
                 const img = card.querySelector('img');
                 if (isEditMode) {
-                    img.style.cursor = "pointer";
                     img.parentElement.classList.add('relative', 'group');
                     
-                    // Add visual overlay to indicate clickability
                     let overlay = img.parentElement.querySelector('.edit-overlay');
                     if (!overlay) {
                         overlay = document.createElement('div');
-                        overlay.className = 'edit-overlay absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer';
+                        overlay.className = 'edit-overlay absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20';
                         overlay.innerHTML = '<span class="text-white font-bold bg-black/50 px-3 py-1 rounded">📸 Змінити фото</span>';
                         img.parentElement.appendChild(overlay);
                     }
@@ -313,7 +307,6 @@
                         input.click();
                     };
                 } else {
-                    img.style.cursor = "";
                     const overlay = img.parentElement.querySelector('.edit-overlay');
                     if (overlay) overlay.style.display = 'none';
                     img.onclick = null;
@@ -321,7 +314,7 @@
             });
             
             if (isEditMode) {
-                alert("Режим редагування увімкнено! Клікніть на текст для зміни, або на картинку для заміни URL.");
+                alert("Режим редагування! Зміни зберігаються у вашому браузері. Щоб оновити сайт для всіх, натисніть 'Зберегти' і замініть файл products.js.");
             }
         };
 
@@ -337,22 +330,46 @@
                      if (match) originalId = parseInt(match[1]);
                 }
 
-                const originalProduct = products.find(p => p.id === originalId);
+                // Find original to keep variants and baseModel
+                const originalProduct = products.find(p => p.id === originalId) || dbProducts.find(p => p.id === originalId);
                 
                 if (originalProduct) {
                     const newProduct = { ...originalProduct };
                     newProduct.name = card.querySelector('h3').innerText;
                     newProduct.description = card.querySelector('p.text-gray-400').innerText;
                     newProduct.price = card.querySelector('span.text-brand-gold').innerText;
-                    newProduct.image = card.querySelector('img').getAttribute('src');
+                    
+                    const img = card.querySelector('img');
+                    // Prefer local filename if newly uploaded, else keep current src
+                    if (img.dataset.filename) {
+                         newProduct.image = "./" + img.dataset.filename;
+                    } else {
+                         newProduct.image = img.getAttribute('src');
+                    }
+                    
                     newProducts.push(newProduct);
                 }
             });
 
-            const json = JSON.stringify(newProducts, null, 2);
-            navigator.clipboard.writeText(`export const products = ${json};`)
-                .then(() => alert("JSON скопійовано в буфер обміну!"))
-                .catch(err => console.error("Failed to copy", err));
+            // 1. Save to LocalStorage (Instant update for user)
+            const jsonStr = JSON.stringify(newProducts, null, 2);
+            localStorage.setItem('veteran_products', jsonStr);
+
+            // 2. Download products.js file
+            const fileContent = `export const products = ${jsonStr};`;
+            const blob = new Blob([fileContent], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'products.js';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert("✅ Зміни збережено!\n1. Сайт оновився у вашому браузері.\n2. Файл 'products.js' завантажено.\n👉 Замініть цим файлом старий файл у папці сайту, щоб зміни стали вічними.");
+            location.reload(); // Reload to apply changes from LocalStorage clean
         };
 
         // 1. Render Catalog
@@ -364,7 +381,7 @@
                     <div class="h-72 overflow-hidden relative">
                         <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent opacity-90"></div>
-                        <div class="absolute bottom-0 left-0 p-6 w-full z-10">
+                        <div class="absolute bottom-0 left-0 p-6 w-full">
                             <h3 class="text-2xl font-bold text-white mb-1 tracking-tight">${product.name}</h3>
                             <div class="w-12 h-1 bg-brand-gold mb-3 transform origin-left scale-0 group-hover:scale-100 transition-transform duration-500"></div>
                         </div>
@@ -407,26 +424,21 @@
             currentProduct = products.find(p => p.id === id);
             if (!currentProduct) return;
 
-            // Determine placement
-            const isWall = currentProduct.name.toLowerCase().includes('козирок') || 
-                           currentProduct.name.toLowerCase().includes('visor');
-
             // Populate Info
-            modalTitle.innerHTML = `${currentProduct.name} <span class="text-xs bg-white/10 px-2 py-1 rounded ml-2 text-gray-400 font-normal tracking-normal align-middle">${isWall ? 'Кріплення: Стіна' : 'Кріплення: Підлога'}</span>`;
+            modalTitle.textContent = currentProduct.name;
             modalPrice.textContent = currentProduct.price;
             modalDesc.textContent = currentProduct.description;
 
+            // Populate Viewer
+            modalViewer.src = currentProduct.baseModel;
+
             // Настройка типа размещения AR
-            if (isWall) {
+            if (currentProduct.name.toLowerCase().includes('козирок') || 
+                currentProduct.name.toLowerCase().includes('visor')) {
                 modalViewer.setAttribute('ar-placement', 'wall');
             } else {
                 modalViewer.setAttribute('ar-placement', 'floor');
             }
-            
-            // Populate Viewer
-            setTimeout(() => {
-                modalViewer.src = currentProduct.baseModel;
-            }, 50);
             
             // Populate Configurator Buttons
             configOptions.innerHTML = '';
