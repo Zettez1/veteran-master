@@ -454,23 +454,26 @@
                         // Check if it's a NEW file (base64 data)
                         if (img.src.startsWith('data:image')) {
                             // It's a base64 string from local file picker
-                            const filename = img.dataset.filename || `image_${Date.now()}.png`;
-                            const cleanFilename = filename.replace(/[^a-zA-Z0-9._-]/g, '_'); // Sanitize
+                            // Generate UNIQUE filename to prevent caching issues
+                            const timestamp = Date.now();
+                            const originalName = img.dataset.filename || 'image.png';
+                            const extension = originalName.split('.').pop() || 'png';
+                            // Clean filename logic
+                            const filename = `img_${timestamp}.${extension}`;
                             
                             // Extract base64 data (remove "data:image/png;base64," prefix)
                             const base64Content = img.src.split(',')[1];
                             
                             // Queue upload to GitHub
                             uploadPromises.push(
-                                uploadFileToGitHub(cleanFilename, base64Content, token, true)
-                                .then(() => console.log(`Uploaded ${cleanFilename}`))
+                                uploadFileToGitHub(filename, base64Content, token, true)
+                                .then(() => console.log(`Uploaded ${filename}`))
                             );
                             
                             // Update product to point to the new remote file
-                            newProduct.image = "./" + cleanFilename;
+                            newProduct.image = "./" + filename;
                         } else {
                             // Keep existing path
-                            // Ensure we use relative path if it was absolute
                             const src = img.getAttribute('src');
                             newProduct.image = src;
                         }
@@ -492,8 +495,35 @@
                 
                 await uploadFileToGitHub('products.js', fileContent, token, false);
 
+                // 3. FORCE UPDATE index.html (Cache Busting)
+                // We update the import version ?v=... to force browser to load new script
+                saveBtn.innerText = "⏳ Оновлення версії...";
+                
+                try {
+                    const indexUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/index.html`;
+                    const indexResponse = await fetch(indexUrl, { headers: { 'Authorization': `Bearer ${token}` } });
+                    
+                    if (indexResponse.ok) {
+                        const indexData = await indexResponse.json();
+                        // Decode current index.html content (UTF-8 safe)
+                        const currentHtml = decodeURIComponent(escape(window.atob(indexData.content)));
+                        
+                        // Replace version timestamp
+                        // Looks for: products.js?v=1234 or products.js
+                        const newVersion = Date.now();
+                        const updatedHtml = currentHtml.replace(/products\.js(\?v=\d+)?/, `products.js?v=${newVersion}`);
+                        
+                        if (updatedHtml !== currentHtml) {
+                            await uploadFileToGitHub('index.html', updatedHtml, token, false);
+                            console.log("Index.html cache busted");
+                        }
+                    }
+                } catch (e) {
+                    console.error("Cache bust failed, but data saved", e);
+                }
+
                 // Success
-                alert("✅ Успішно!\nСайт оновлено на сервері GitHub.\nЗміни з'являться в інтернеті через 1-2 хвилини.");
+                alert("✅ Успішно!\nСайт оновлено. Зачекайте 1-2 хвилини і оновіть сторінку.");
                 
                 // Save token to local storage so user doesn't have to type it again
                 localStorage.setItem('gh_token', token);
