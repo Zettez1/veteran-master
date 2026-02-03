@@ -237,13 +237,22 @@
             <p class="text-xs uppercase tracking-widest mb-4">© 2024 Ветеран-Майстер. Усі права захищені.</p>
             
             <!-- Admin Tools -->
-            <div class="mt-4 flex justify-center gap-4 flex-wrap">
-                <button onclick="toggleEditMode()" class="bg-gray-800 text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-gray-700 transition-colors border border-white/10 shadow-lg">
-                    ✏️ Режим редагування
-                </button>
-                <button id="save-btn" onclick="exportChanges()" class="hidden bg-green-700 text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-green-600 transition-colors border border-white/10 shadow-[0_0_15px_rgba(0,255,0,0.3)] animate-pulse">
-                    💾 Зберегти зміни
-                </button>
+            <div class="mt-4 flex flex-col items-center gap-4">
+                <div class="flex justify-center gap-4 flex-wrap">
+                    <button onclick="toggleEditMode()" class="bg-gray-800 text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-gray-700 transition-colors border border-white/10 shadow-lg">
+                        ✏️ Режим редагування
+                    </button>
+                    <button id="save-btn" onclick="exportChanges()" class="hidden bg-green-700 text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-green-600 transition-colors border border-white/10 shadow-[0_0_15px_rgba(0,255,0,0.3)] animate-pulse">
+                        💾 Зберегти зміни
+                    </button>
+                </div>
+                
+                <!-- Token Input (Hidden by default, shown in edit mode) -->
+                <div id="token-container" class="hidden w-full max-w-md">
+                    <input type="password" id="github-token" placeholder="Вставте GitHub Token (ghp_...)" 
+                           class="w-full bg-black/50 text-white text-xs px-3 py-2 rounded border border-white/20 focus:border-brand-gold focus:outline-none text-center">
+                    <p class="text-[9px] text-gray-500 mt-1">Цей ключ дозволяє змінювати сайт без доступу до вашого ПК.</p>
+                </div>
             </div>
             <p class="mt-4 text-[10px] text-gray-600">
                 <span class="block mb-1">Режим адміністратора:</span>
@@ -277,10 +286,19 @@
             isEditMode = !isEditMode;
             const btn = document.querySelector('button[onclick="toggleEditMode()"]');
             const saveBtn = document.getElementById('save-btn');
+            const tokenContainer = document.getElementById('token-container');
+            const tokenInput = document.getElementById('github-token');
             
             btn.textContent = isEditMode ? "❌ Вийти" : "✏️ Режим редагування";
             btn.classList.toggle('bg-red-800', isEditMode);
             saveBtn.classList.toggle('hidden', !isEditMode);
+            tokenContainer.classList.toggle('hidden', !isEditMode);
+
+            // Auto-fill token if saved
+            if (isEditMode) {
+                const savedToken = localStorage.getItem('gh_token');
+                if (savedToken) tokenInput.value = savedToken;
+            }
 
             // Select cards
             const cards = document.querySelectorAll('#products-grid > div');
@@ -341,96 +359,152 @@
             });
             
             if (isEditMode) {
-                alert("Режим редагування! \n\n1. Натисніть на текст, щоб змінити його.\n2. Наведіть на фото, щоб змінити його.\n3. В кінці натисніть 'ЗБЕРЕГТИ'.");
+                alert("Режим редагування! \n\n1. Натисніть на текст, щоб змінити його.\n2. Наведіть на фото, щоб змінити його.\n3. Введіть GitHub Token (ключ) внизу.\n4. Натисніть 'ЗБЕРЕГТИ'.");
             }
         };
 
-        window.exportChanges = async () => {
-            const cards = document.querySelectorAll('#products-grid > div');
-            const newProducts = [];
+        // --- GITHUB API INTEGRATION ---
+        const REPO_OWNER = 'Zettez1';
+        const REPO_NAME = 'veteran-master';
+        
+        async function uploadFileToGitHub(filename, content, token, isBinary = false) {
+            const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}`;
             
-            cards.forEach((card) => {
-                const btn = card.querySelector('button[onclick^="window.quickAR"]');
-                let originalId = null;
-                if (btn) {
-                     const match = btn.getAttribute('onclick').match(/window\.quickAR\((\d+)\)/);
-                     if (match) originalId = parseInt(match[1]);
+            // 1. Get current SHA (if file exists) to update it
+            let sha = null;
+            try {
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    sha = data.sha;
                 }
+            } catch (e) {
+                console.log("File likely doesn't exist yet, creating new.");
+            }
 
-                // Find original to keep variants and baseModel
-                const originalProduct = products.find(p => p.id === originalId) || dbProducts.find(p => p.id === originalId);
-                
-                if (originalProduct) {
-                    const newProduct = { ...originalProduct };
-                    newProduct.name = card.querySelector('h3').innerText;
-                    newProduct.description = card.querySelector('p.text-gray-400').innerText;
-                    newProduct.price = card.querySelector('span.text-brand-gold').innerText;
-                    
-                    const img = card.querySelector('img');
-                    if (img.dataset.filename) {
-                         newProduct.image = "./" + img.dataset.filename;
-                    } else {
-                         newProduct.image = img.getAttribute('src');
-                    }
-                    
-                    newProducts.push(newProduct);
-                }
+            // 2. Prepare payload
+            // For binary (images), content must be base64 string already
+            // For text, we encode it
+            const encodedContent = isBinary ? content : btoa(unescape(encodeURIComponent(content)));
+
+            const body = {
+                message: `Update ${filename} via Web Admin`,
+                content: encodedContent,
+                branch: 'main'
+            };
+            if (sha) body.sha = sha;
+
+            // 3. Upload
+            const putResponse = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
             });
 
-            // 1. Save to LocalStorage (Instant update for user)
-            const jsonStr = JSON.stringify(newProducts, null, 2);
-            localStorage.setItem('veteran_products', jsonStr);
-
-            // 2. File System Access API (Smart Save)
-            const fileContent = `export const products = ${jsonStr};`;
-            
-            try {
-                if (window.showSaveFilePicker) {
-                    if (!fileHandle) {
-                        // First time: Ask user to pick file
-                        fileHandle = await window.showSaveFilePicker({
-                            suggestedName: 'products.js',
-                            types: [{
-                                description: 'JavaScript File',
-                                accept: { 'text/javascript': ['.js'] },
-                            }],
-                        });
-                    }
-                    
-                    // Write to the handle (Silent after first time)
-                    const writable = await fileHandle.createWritable();
-                    await writable.write(fileContent);
-                    await writable.close();
-                    
-                    // Feedback
-                    const saveBtn = document.getElementById('save-btn');
-                    const originalText = saveBtn.innerText;
-                    saveBtn.innerText = "✅ Збережено!";
-                    setTimeout(() => saveBtn.innerText = originalText, 2000);
-                    
-                    console.log("File saved successfully");
-                } else {
-                    throw new Error("Not supported");
-                }
-            } catch (err) {
-                // Fallback to Download if user cancels or not supported
-                if (err.name !== 'AbortError') {
-                    console.error("File Save Error:", err);
-                    const blob = new Blob([fileContent], { type: 'text/javascript' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'products.js';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }
+            if (!putResponse.ok) {
+                throw new Error(`GitHub Error: ${putResponse.statusText}`);
             }
+        }
+
+        window.exportChanges = async () => {
+            const tokenInput = document.getElementById('github-token');
+            const token = tokenInput.value.trim();
             
-            // Note: We don't reload immediately to allow multiple edits, 
-            // but we might want to reload eventually to show "clean" state.
-            // For now, let's keep the user in edit mode.
+            if (!token) {
+                alert("⚠️ Увага!\nДля віддаленого збереження потрібен 'GitHub Token'.\nВставте його в поле внизу (поруч із кнопкою збереження).");
+                tokenInput.focus();
+                return;
+            }
+
+            const saveBtn = document.getElementById('save-btn');
+            const originalText = saveBtn.innerText;
+            saveBtn.innerText = "⏳ Завантаження...";
+            saveBtn.disabled = true;
+
+            try {
+                const cards = document.querySelectorAll('#products-grid > div');
+                const newProducts = [];
+                
+                // Track upload promises
+                const uploadPromises = [];
+
+                for (const card of cards) {
+                    const btn = card.querySelector('button[onclick^="window.quickAR"]');
+                    let originalId = null;
+                    if (btn) {
+                         const match = btn.getAttribute('onclick').match(/window\.quickAR\((\d+)\)/);
+                         if (match) originalId = parseInt(match[1]);
+                    }
+
+                    const originalProduct = products.find(p => p.id === originalId) || dbProducts.find(p => p.id === originalId);
+                    
+                    if (originalProduct) {
+                        const newProduct = { ...originalProduct };
+                        newProduct.name = card.querySelector('h3').innerText;
+                        newProduct.description = card.querySelector('p.text-gray-400').innerText;
+                        newProduct.price = card.querySelector('span.text-brand-gold').innerText;
+                        
+                        const img = card.querySelector('img');
+                        
+                        // Check if it's a NEW file (base64 data)
+                        if (img.src.startsWith('data:image')) {
+                            // It's a base64 string from local file picker
+                            const filename = img.dataset.filename || `image_${Date.now()}.png`;
+                            const cleanFilename = filename.replace(/[^a-zA-Z0-9._-]/g, '_'); // Sanitize
+                            
+                            // Extract base64 data (remove "data:image/png;base64," prefix)
+                            const base64Content = img.src.split(',')[1];
+                            
+                            // Queue upload to GitHub
+                            uploadPromises.push(
+                                uploadFileToGitHub(cleanFilename, base64Content, token, true)
+                                .then(() => console.log(`Uploaded ${cleanFilename}`))
+                            );
+                            
+                            // Update product to point to the new remote file
+                            newProduct.image = "./" + cleanFilename;
+                        } else {
+                            // Keep existing path
+                            // Ensure we use relative path if it was absolute
+                            const src = img.getAttribute('src');
+                            newProduct.image = src;
+                        }
+                        
+                        newProducts.push(newProduct);
+                    }
+                }
+
+                // 1. Wait for all images to upload
+                if (uploadPromises.length > 0) {
+                    saveBtn.innerText = "⏳ Завантаження фото...";
+                    await Promise.all(uploadPromises);
+                }
+
+                // 2. Upload products.js
+                saveBtn.innerText = "⏳ Оновлення коду...";
+                const jsonStr = JSON.stringify(newProducts, null, 2);
+                const fileContent = `export const products = ${jsonStr};`;
+                
+                await uploadFileToGitHub('products.js', fileContent, token, false);
+
+                // Success
+                alert("✅ Успішно!\nСайт оновлено на сервері GitHub.\nЗміни з'являться в інтернеті через 1-2 хвилини.");
+                
+                // Save token to local storage so user doesn't have to type it again
+                localStorage.setItem('gh_token', token);
+                location.reload();
+
+            } catch (err) {
+                console.error(err);
+                alert("❌ Помилка збереження:\n" + err.message);
+                saveBtn.innerText = originalText;
+                saveBtn.disabled = false;
+            }
         };
 
         // 1. Render Catalog
