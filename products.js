@@ -31,9 +31,9 @@ export const products = [
     "price": "від 35 000 грн",
     "description": "Відкатні ворота з автоматикою. Сучасний стиль, безпека та довговічність.",
     "image": "https://placehold.co/600x400/1f2937/f97316?text=Gate+Bastion",
-    "baseModel": "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
+    "baseModel": "./vorota.glb",
     "variants": {
-      "standard": "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+      "standard": "./vorota.glb"
     }
   },
   {
