@@ -301,9 +301,11 @@
                     let overlay = img.parentElement.querySelector('.edit-overlay');
                     if (!overlay) {
                         overlay = document.createElement('div');
-                        overlay.className = 'edit-overlay absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20';
+                        overlay.className = 'edit-overlay absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-0';
                         overlay.innerHTML = '<span class="text-white font-bold bg-black/50 px-3 py-1 rounded">📸 Змінити фото</span>';
-                        img.parentElement.appendChild(overlay);
+                        // Insert before the title container (which is usually the last element or has z-10)
+                        // Actually, just setting z-0 is enough if title is z-10.
+                        img.parentElement.insertBefore(overlay, img.nextSibling); 
                     }
                     overlay.style.display = 'flex';
 
