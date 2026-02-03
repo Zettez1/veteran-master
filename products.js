@@ -27,10 +27,10 @@ export const products = [
   },
   {
     "id": 3,
-    "name": "Ворота 'Бастіон'",
-    "price": "від 35 000 грн",
+    "name": "Відкатні ворота 4х1,7",
+    "price": "від 51 000 грн",
     "description": "Відкатні ворота з автоматикою. Сучасний стиль, безпека та довговічність.",
-    "image": "https://placehold.co/600x400/1f2937/f97316?text=Gate+Bastion",
+    "image": "./img_1770083820530.png",
     "baseModel": "./vorota.glb",
     "variants": {
       "standard": "./vorota.glb"
