@@ -271,6 +271,7 @@
 
         // State & Admin Logic
         let isEditMode = false;
+        let fileHandle = null; // Store handle for silent saves
 
         window.toggleEditMode = () => {
             isEditMode = !isEditMode;
@@ -291,6 +292,9 @@
                     t.classList.toggle('border-dashed', isEditMode);
                     t.classList.toggle('border-brand-gold', isEditMode);
                     t.classList.toggle('p-1', isEditMode);
+                    // High z-index for text editing
+                    if (isEditMode) t.classList.add('relative', 'z-50');
+                    else t.classList.remove('relative', 'z-50');
                 });
 
                 // Images logic (Overlay)
@@ -301,10 +305,10 @@
                     let overlay = img.parentElement.querySelector('.edit-overlay');
                     if (!overlay) {
                         overlay = document.createElement('div');
-                        overlay.className = 'edit-overlay absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-0';
+                        overlay.className = 'edit-overlay absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20';
                         overlay.innerHTML = '<span class="text-white font-bold bg-black/50 px-3 py-1 rounded">📸 Змінити фото</span>';
-                        // Insert before the title container (which is usually the last element or has z-10)
-                        // Actually, just setting z-0 is enough if title is z-10.
+                        // Insert before title container to avoid covering it? 
+                        // No, we rely on z-index now.
                         img.parentElement.insertBefore(overlay, img.nextSibling); 
                     }
                     overlay.style.display = 'flex';
@@ -337,7 +341,7 @@
             });
             
             if (isEditMode) {
-                alert("Режим редагування! Зміни зберігаються у вашому браузері. Щоб оновити сайт для всіх, натисніть 'Зберегти' і замініть файл products.js.");
+                alert("Режим редагування! \n\n1. Натисніть на текст, щоб змінити його.\n2. Наведіть на фото, щоб змінити його.\n3. В кінці натисніть 'ЗБЕРЕГТИ'.");
             }
         };
 
@@ -363,7 +367,6 @@
                     newProduct.price = card.querySelector('span.text-brand-gold').innerText;
                     
                     const img = card.querySelector('img');
-                    // Prefer local filename if newly uploaded, else keep current src
                     if (img.dataset.filename) {
                          newProduct.image = "./" + img.dataset.filename;
                     } else {
@@ -378,44 +381,56 @@
             const jsonStr = JSON.stringify(newProducts, null, 2);
             localStorage.setItem('veteran_products', jsonStr);
 
-            // 2. Try File System Access API (Direct Save) or Download
+            // 2. File System Access API (Smart Save)
             const fileContent = `export const products = ${jsonStr};`;
             
             try {
                 if (window.showSaveFilePicker) {
-                    const handle = await window.showSaveFilePicker({
-                        suggestedName: 'products.js',
-                        types: [{
-                            description: 'JavaScript File',
-                            accept: { 'text/javascript': ['.js'] },
-                        }],
-                    });
-                    const writable = await handle.createWritable();
+                    if (!fileHandle) {
+                        // First time: Ask user to pick file
+                        fileHandle = await window.showSaveFilePicker({
+                            suggestedName: 'products.js',
+                            types: [{
+                                description: 'JavaScript File',
+                                accept: { 'text/javascript': ['.js'] },
+                            }],
+                        });
+                    }
+                    
+                    // Write to the handle (Silent after first time)
+                    const writable = await fileHandle.createWritable();
                     await writable.write(fileContent);
                     await writable.close();
-                    alert("✅ Файл успішно оновлено! Тепер запустіть файл 'publish.bat' на робочому столі, щоб оновити сайт в інтернеті.");
+                    
+                    // Feedback
+                    const saveBtn = document.getElementById('save-btn');
+                    const originalText = saveBtn.innerText;
+                    saveBtn.innerText = "✅ Збережено!";
+                    setTimeout(() => saveBtn.innerText = originalText, 2000);
+                    
+                    console.log("File saved successfully");
                 } else {
                     throw new Error("Not supported");
                 }
             } catch (err) {
-                // Fallback to Download
-                const blob = new Blob([fileContent], { type: 'text/javascript' });
-                const url = URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'products.js';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                
+                // Fallback to Download if user cancels or not supported
                 if (err.name !== 'AbortError') {
-                    alert("✅ Зміни збережено!\n1. Сайт оновився у вашому браузері.\n2. Файл 'products.js' завантажено.\n👉 Замініть цим файлом старий файл у папці сайту і запустіть 'publish.bat'.");
+                    console.error("File Save Error:", err);
+                    const blob = new Blob([fileContent], { type: 'text/javascript' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'products.js';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
                 }
             }
             
-            location.reload(); // Reload to apply changes
+            // Note: We don't reload immediately to allow multiple edits, 
+            // but we might want to reload eventually to show "clean" state.
+            // For now, let's keep the user in edit mode.
         };
 
         // 1. Render Catalog
