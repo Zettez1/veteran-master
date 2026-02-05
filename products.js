@@ -1,31 +1,5 @@
 export const products = [
   {
-    "id": 1,
-    "name": "Навіс 'Альфа'",
-    "price": "від 45 000 грн",
-    "description": "Надійний навіс для автомобіля з профільної труби. Ідеальний для приватного будинку та дачі.",
-    "image": "https://placehold.co/600x400/1f2937/f97316?text=Carport+Alpha",
-    "baseModel": "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
-    "variants": {
-      "single_slope_left": "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
-      "single_slope_right": "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
-      "gable": "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
-      "hip": "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-    }
-  },
-  {
-    "id": 2,
-    "name": "Ангар 'Профі'",
-    "price": "від 120 000 грн",
-    "description": "Просторий ангар для зберігання техніки або складу. Посилена фермена конструкція.",
-    "image": "https://placehold.co/600x400/1f2937/f97316?text=Hangar+Profi",
-    "baseModel": "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
-    "variants": {
-      "standard": "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
-      "high_roof": "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-    }
-  },
-  {
     "id": 3,
     "name": "Відкатні ворота 4х1,7",
     "price": "від 51 000 грн",
