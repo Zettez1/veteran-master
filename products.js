@@ -79,5 +79,63 @@ export const products = [
     "variants": {
       "standard": "./Kozurok.glb"
     }
+  },
+  {
+    "id": 11,
+    "name": "Козирок 'Еліт'",
+    "price": "16 500 грн",
+    "placement": "wall",
+    "description": "Елітний козирок з вишуканим кованим візерунком. Підкреслить статус вашого будинку.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Visor+Elite",
+    "baseModel": "./Kozurok2.glb",
+    "variants": {
+      "standard": "./Kozurok2.glb"
+    }
+  },
+  {
+    "id": 12,
+    "name": "Козирок 'Арка'",
+    "price": "14 200 грн",
+    "placement": "wall",
+    "description": "Арочний козирок для класичних фасадів. Надійний захист від дощу та снігу.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Visor+Arch",
+    "baseModel": "./Kozurok3.glb",
+    "variants": {
+      "standard": "./Kozurok3.glb"
+    }
+  },
+  {
+    "id": 13,
+    "name": "Козирок 'Мінімал'",
+    "price": "11 800 грн",
+    "placement": "wall",
+    "description": "Лаконічний дизайн у стилі мінімалізм. Легка конструкція та простий монтаж.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Visor+Minimal",
+    "baseModel": "./Kozurok4.glb",
+    "variants": {
+      "standard": "./Kozurok4.glb"
+    }
+  },
+  {
+    "id": 14,
+    "name": "Навіс 'Гранд'",
+    "price": "62 000 грн",
+    "description": "Великий навіс для двох автомобілів. Посилена конструкція та довговічні матеріали.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Carport+Grand",
+    "baseModel": "./Naves22.glb",
+    "variants": {
+      "standard": "./Naves22.glb"
+    }
+  },
+  {
+    "id": 15,
+    "name": "Навіс 6х4м",
+    "price": "58 000 грн",
+    "description": "Популярний розмір 6 на 4 метри. Оптимальне співвідношення ціни та якості.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Carport+6x4",
+    "baseModel": "./naves6_4.glb",
+    "variants": {
+      "standard": "./naves6_4.glb"
+    }
   }
 ];
