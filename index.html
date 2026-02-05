@@ -161,7 +161,6 @@
                         touch-action="none"
                         auto-rotate
                         ar
-                        ar-scale="fixed"
                         ar-modes="scene-viewer webxr quick-look"
                         ar-placement="floor"
                         class="w-full h-full"
@@ -599,13 +598,8 @@
             // Populate Viewer
             modalViewer.src = currentProduct.baseModel;
 
-            // Настройка типа размещения AR
-            if (currentProduct.name.toLowerCase().includes('козирок') || 
-                currentProduct.name.toLowerCase().includes('visor')) {
-                modalViewer.setAttribute('ar-placement', 'wall');
-            } else {
-                modalViewer.setAttribute('ar-placement', 'floor');
-            }
+            // Настройка типа размещения AR (всегда floor для стабильности)
+            modalViewer.setAttribute('ar-placement', 'floor');
             
             // Populate Configurator Buttons
             configOptions.innerHTML = '';
