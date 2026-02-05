@@ -161,7 +161,7 @@
                         touch-action="none"
                         auto-rotate
                         ar
-                        ar-modes="scene-viewer webxr quick-look"
+                        ar-modes="webxr scene-viewer quick-look"
                         ar-placement="floor"
                         class="w-full h-full"
                     >
@@ -235,7 +235,7 @@
     <!-- Footer -->
     <footer class="glass mt-0 py-8 border-t border-white/10 relative z-30 bg-[#1a1a1a]">
         <div class="container mx-auto px-4 text-center text-gray-400">
-            <p class="text-xs uppercase tracking-widest mb-4">© 2024 Ветеран-Майстер. Усі права захищені.</p>
+            <p class="text-xs uppercase tracking-widest mb-4">© 2024 Ветеран-Майстер. Усі права захищені. <span class="opacity-30 ml-2 text-[10px]">v2.1 (Floor Only)</span></p>
             
             <!-- Admin Tools -->
             <div class="mt-4 flex flex-col items-center gap-4">
@@ -264,7 +264,7 @@
 
     <!-- Logic Script -->
     <script type="module">
-        import { products as dbProducts } from './products.js?v=1770083825311';
+        import { products as dbProducts } from './products.js?v=1770083825312';
 
         // Initialize Products (Local Storage or Database)
         let products = dbProducts;
