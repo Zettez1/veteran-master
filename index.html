@@ -169,6 +169,21 @@
                             <!-- Native button hidden, we use custom one -->
                         </button>
                     </model-viewer>
+
+                    <!-- Custom Controls (Sliders) -->
+                    <div id="model-controls" class="absolute bottom-4 left-4 right-4 z-30 flex flex-col gap-2 bg-black/60 p-4 rounded backdrop-blur-md border border-white/10 transition-opacity duration-300">
+                        <!-- Rotation -->
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs text-brand-gold font-bold uppercase w-20">Поворот</span>
+                            <input type="range" id="rotate-slider" min="0" max="360" value="0" class="w-full accent-brand-gold h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        <!-- Scale -->
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs text-brand-gold font-bold uppercase w-20">Розмір</span>
+                            <input type="range" id="scale-slider" min="50" max="150" value="100" class="w-full accent-brand-gold h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        <div class="text-[9px] text-gray-400 text-center mt-1">Налаштуйте модель тут перед натисканням "Відкрити камеру"</div>
+                    </div>
                     
                     <!-- AR Loading Overlay (Outside model-viewer for correct stacking) -->
                     <div id="ar-overlay" class="absolute inset-0 bg-black/90 z-40 flex flex-col items-center justify-center text-center p-6 hidden backdrop-blur-md transition-opacity duration-300 pointer-events-auto">
@@ -235,7 +250,7 @@
     <!-- Footer -->
     <footer class="glass mt-0 py-8 border-t border-white/10 relative z-30 bg-[#1a1a1a]">
         <div class="container mx-auto px-4 text-center text-gray-400">
-            <p class="text-xs uppercase tracking-widest mb-4">© 2024 Ветеран-Майстер. Усі права захищені. <span class="opacity-30 ml-2 text-[10px]">v2.1 (Floor Only)</span></p>
+            <p class="text-xs uppercase tracking-widest mb-4">© 2024 Ветеран-Майстер. Усі права захищені. <span class="opacity-30 ml-2 text-[10px]">v2.2 (Controls)</span></p>
             
             <!-- Admin Tools -->
             <div class="mt-4 flex flex-col items-center gap-4">
@@ -264,7 +279,7 @@
 
     <!-- Logic Script -->
     <script type="module">
-        import { products as dbProducts } from './products.js?v=1770083825312';
+        import { products as dbProducts } from './products.js?v=1770083825313';
 
         // Initialize Products (Local Storage or Database)
         let products = dbProducts;
@@ -598,8 +613,18 @@
             // Populate Viewer
             modalViewer.src = currentProduct.baseModel;
 
-            // Настройка типа размещения AR (всегда floor для стабильности)
-            modalViewer.setAttribute('ar-placement', 'floor');
+            // Настройка типа размещения AR (dynamic)
+            const placement = currentProduct.placement || 'floor';
+            modalViewer.setAttribute('ar-placement', placement);
+            console.log(`Setting AR placement to: ${placement}`);
+
+            // Reset Sliders & Model Transform
+            const rotateSlider = document.getElementById('rotate-slider');
+            const scaleSlider = document.getElementById('scale-slider');
+            if (rotateSlider) rotateSlider.value = 0;
+            if (scaleSlider) scaleSlider.value = 100;
+            modalViewer.orientation = "0deg 0deg 0deg";
+            modalViewer.scale = "1 1 1";
             
             // Populate Configurator Buttons
             configOptions.innerHTML = '';
@@ -748,6 +773,24 @@
 
         // Initialize
         renderCatalog();
+
+        // Sliders Logic
+        const rotateSlider = document.getElementById('rotate-slider');
+        const scaleSlider = document.getElementById('scale-slider');
+
+        if (rotateSlider && modalViewer) {
+            rotateSlider.addEventListener('input', (e) => {
+                const deg = e.target.value;
+                modalViewer.orientation = `0deg ${deg}deg 0deg`;
+            });
+        }
+
+        if (scaleSlider && modalViewer) {
+            scaleSlider.addEventListener('input', (e) => {
+                const val = e.target.value / 100;
+                modalViewer.scale = `${val} ${val} ${val}`;
+            });
+        }
 
         // Close modal on Esc key
         document.addEventListener('keydown', (e) => {
