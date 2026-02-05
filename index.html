@@ -253,7 +253,7 @@
     <!-- Footer -->
     <footer class="glass mt-0 py-8 border-t border-white/10 relative z-30 bg-[#1a1a1a]">
         <div class="container mx-auto px-4 text-center text-gray-400">
-            <p class="text-xs uppercase tracking-widest mb-4">© 2024 Ветеран-Майстер. Усі права захищені. <span class="opacity-30 ml-2 text-[10px]">v2.3 (AR Sliders)</span></p>
+            <p class="text-xs uppercase tracking-widest mb-4">© 2024 Ветеран-Майстер. Усі права захищені. <span class="opacity-30 ml-2 text-[10px]">v2.4 (Hybrid AR)</span></p>
             
             <!-- Admin Tools -->
             <div class="mt-4 flex flex-col items-center gap-4">
@@ -282,7 +282,7 @@
 
     <!-- Logic Script -->
     <script type="module">
-        import { products as dbProducts } from './products.js?v=1770083825314';
+        import { products as dbProducts } from './products.js?v=1770083825315';
 
         // Initialize Products (Local Storage or Database)
         let products = dbProducts;
@@ -563,8 +563,8 @@
             productsGrid.innerHTML = products.map(product => `
                 <div class="glass rounded-sm overflow-hidden hover:border-brand-gold/50 transition-all duration-500 group relative">
                     <div class="h-72 overflow-hidden relative">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent opacity-90"></div>
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent opacity-90"></div>
                         <div class="absolute bottom-0 left-0 p-6 w-full">
                             <h3 class="text-2xl font-bold text-white mb-1 tracking-tight">${product.name}</h3>
                             <div class="w-12 h-1 bg-brand-gold mb-3 transform origin-left scale-0 group-hover:scale-100 transition-transform duration-500"></div>
@@ -620,6 +620,14 @@
             const placement = currentProduct.placement || 'floor';
             modalViewer.setAttribute('ar-placement', placement);
             console.log(`Setting AR placement to: ${placement}`);
+
+            // Dynamic AR Modes based on Device
+            // Android -> Scene Viewer (Native Google AR)
+            // iOS -> WebXR (Current) -> QuickLook
+            const isAndroid = /android/i.test(navigator.userAgent);
+            const arModes = isAndroid ? "scene-viewer webxr quick-look" : "webxr scene-viewer quick-look";
+            modalViewer.setAttribute('ar-modes', arModes);
+            console.log(`Setting AR modes to: ${arModes} (Android: ${isAndroid})`);
 
             // Reset Sliders & Model Transform
             // No pre-preview sliders anymore
