@@ -92,5 +92,16 @@ export const products = [
     "variants": {
       "standard": "./single_slope_carport.glb"
     }
+  },
+  {
+    "id": 10,
+    "name": "Козирок 'Модерн'",
+    "price": "15 000 грн",
+    "description": "Сучасний козирок з покращеним дизайном. Ідеальне доповнення для вашого фасаду.",
+    "image": "./Gemini_Generated_Image_sc71oesc71oesc71.png",
+    "baseModel": "./Kozurok.glb",
+    "variants": {
+      "standard": "./Kozurok.glb"
+    }
   }
 ];
