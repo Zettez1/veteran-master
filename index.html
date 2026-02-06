@@ -413,7 +413,11 @@
                     // 1. Get current SHA (if file exists)
                     let sha = null;
                     
-                    const getResponse = await fetch(url + `?t=${Date.now()}`, {
+                    // Use ref=main to be explicit and avoid caching issues with ?t=...
+                    // We rely on Cache-Control headers for freshness
+                    const getUrl = `${url}?ref=main`; 
+                    
+                    const getResponse = await fetch(getUrl, {
                         headers: { 
                             'Authorization': `Bearer ${token}`,
                             'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -426,9 +430,13 @@
                     if (getResponse.ok) {
                         const data = await getResponse.json();
                         sha = data.sha;
+                        console.log(`Got SHA for ${filename}: ${sha}`);
                     } else if (getResponse.status === 404) {
+                        console.log(`File ${filename} not found (404), assuming new.`);
                         sha = null; // New file
                     } else {
+                        // Log unexpected status but retry
+                        console.warn(`Get SHA status: ${getResponse.status}`);
                         throw new Error(`Get SHA Error: ${getResponse.status} ${getResponse.statusText}`);
                     }
 
