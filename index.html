@@ -412,22 +412,24 @@
                 try {
                     // 1. Get current SHA (if file exists)
                     let sha = null;
-                    try {
-                        const response = await fetch(url + `?t=${Date.now()}`, {
-                            headers: { 
-                                'Authorization': `Bearer ${token}`,
-                                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                                'Pragma': 'no-cache',
-                                'Expires': '0'
-                            },
-                            cache: 'no-store'
-                        });
-                        if (response.ok) {
-                            const data = await response.json();
-                            sha = data.sha;
-                        }
-                    } catch (e) {
-                        console.log("File check failed (new file?)");
+                    
+                    const getResponse = await fetch(url + `?t=${Date.now()}`, {
+                        headers: { 
+                            'Authorization': `Bearer ${token}`,
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache',
+                            'Expires': '0'
+                        },
+                        cache: 'no-store'
+                    });
+
+                    if (getResponse.ok) {
+                        const data = await getResponse.json();
+                        sha = data.sha;
+                    } else if (getResponse.status === 404) {
+                        sha = null; // New file
+                    } else {
+                        throw new Error(`Get SHA Error: ${getResponse.status} ${getResponse.statusText}`);
                     }
 
                     // 2. Prepare payload
