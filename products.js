@@ -62,7 +62,7 @@ export const products = [
     "name": "Навіс Односхилий",
     "price": "48 000 грн",
     "description": "Класичний односхилий навіс. Лаконічний дизайн, простота монтажу та надійність конструкції.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Single+Slope",
+    "image": "./img_1770419582791.png",
     "baseModel": "./single_slope_carport.glb",
     "variants": {
       "standard": "./single_slope_carport.glb"
@@ -86,7 +86,7 @@ export const products = [
     "price": "16 500 грн",
     "placement": "wall",
     "description": "Елітний козирок з вишуканим кованим візерунком. Підкреслить статус вашого будинку.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Visor+Elite",
+    "image": "./img_1770419582793.png",
     "baseModel": "./Kozurok2.glb",
     "variants": {
       "standard": "./Kozurok2.glb"
