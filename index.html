@@ -406,55 +406,73 @@
         
         async function uploadFileToGitHub(filename, content, token, isBinary = false) {
             const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}`;
+            const maxRetries = 3;
             
-            // 1. Get current SHA (if file exists) to update it
-            let sha = null;
-            try {
-                // Add timestamp and cache control to ensure we get the latest SHA
-                const response = await fetch(url + `?t=${Date.now()}`, {
-                    headers: { 
-                        'Authorization': `Bearer ${token}`,
-                        'Cache-Control': 'no-cache'
-                    },
-                    cache: 'no-store'
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    sha = data.sha;
-                }
-            } catch (e) {
-                console.log("File likely doesn't exist yet, creating new.");
-            }
-
-            // 2. Prepare payload
-            // For binary (images), content must be base64 string already
-            // For text, we encode it
-            const encodedContent = isBinary ? content : btoa(unescape(encodeURIComponent(content)));
-
-            const body = {
-                message: `Update ${filename} via Web Admin`,
-                content: encodedContent,
-                branch: 'main'
-            };
-            if (sha) body.sha = sha;
-
-            // 3. Upload
-            const putResponse = await fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
-
-            if (!putResponse.ok) {
-                let errorMsg = putResponse.statusText;
+            for (let i = 0; i < maxRetries; i++) {
                 try {
-                    const errData = await putResponse.json();
-                    if (errData.message) errorMsg = errData.message;
-                } catch (e) {}
-                throw new Error(`GitHub Error (${putResponse.status}): ${errorMsg}`);
+                    // 1. Get current SHA (if file exists)
+                    let sha = null;
+                    try {
+                        const response = await fetch(url + `?t=${Date.now()}`, {
+                            headers: { 
+                                'Authorization': `Bearer ${token}`,
+                                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                                'Pragma': 'no-cache',
+                                'Expires': '0'
+                            },
+                            cache: 'no-store'
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            sha = data.sha;
+                        }
+                    } catch (e) {
+                        console.log("File check failed (new file?)");
+                    }
+
+                    // 2. Prepare payload
+                    const encodedContent = isBinary ? content : btoa(unescape(encodeURIComponent(content)));
+                    const body = {
+                        message: `Update ${filename} via Web Admin`,
+                        content: encodedContent,
+                        branch: 'main'
+                    };
+                    if (sha) body.sha = sha;
+
+                    // 3. Upload
+                    const putResponse = await fetch(url, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(body)
+                    });
+
+                    if (putResponse.ok) {
+                        return; // Success!
+                    }
+
+                    // If 409 Conflict, Retry
+                    if (putResponse.status === 409) {
+                        console.warn(`SHA conflict for ${filename}, retrying... (${i+1}/${maxRetries})`);
+                        await new Promise(r => setTimeout(r, 1000)); // Wait 1s
+                        continue; // Retry loop
+                    }
+
+                    // Other errors
+                    let errorMsg = putResponse.statusText;
+                    try {
+                        const errData = await putResponse.json();
+                        if (errData.message) errorMsg = errData.message;
+                    } catch (e) {}
+                    throw new Error(`GitHub Error (${putResponse.status}): ${errorMsg}`);
+
+                } catch (err) {
+                    if (i === maxRetries - 1) throw err; // Throw on last attempt
+                    console.warn(`Upload attempt ${i+1} failed: ${err.message}, retrying...`);
+                    await new Promise(r => setTimeout(r, 1000));
+                }
             }
         }
 
