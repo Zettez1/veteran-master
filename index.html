@@ -444,7 +444,12 @@
             });
 
             if (!putResponse.ok) {
-                throw new Error(`GitHub Error: ${putResponse.statusText}`);
+                let errorMsg = putResponse.statusText;
+                try {
+                    const errData = await putResponse.json();
+                    if (errData.message) errorMsg = errData.message;
+                } catch (e) {}
+                throw new Error(`GitHub Error (${putResponse.status}): ${errorMsg}`);
             }
         }
 
