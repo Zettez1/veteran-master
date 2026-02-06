@@ -410,8 +410,13 @@
             // 1. Get current SHA (if file exists) to update it
             let sha = null;
             try {
-                const response = await fetch(url, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                // Add timestamp and cache control to ensure we get the latest SHA
+                const response = await fetch(url + `?t=${Date.now()}`, {
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Cache-Control': 'no-cache'
+                    },
+                    cache: 'no-store'
                 });
                 if (response.ok) {
                     const data = await response.json();
