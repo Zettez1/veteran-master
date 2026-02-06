@@ -11,17 +11,6 @@ export const products = [
     }
   },
   {
-    "id": 5,
-    "name": "Стілець 'Вуд-Метал'",
-    "price": "3 500 грн",
-    "description": "Елегантне поєднання натурального дерева та металу. Надійність та естетика.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Wood+Metal+Chair",
-    "baseModel": "./chair_made_of_metal_and_wood.glb",
-    "variants": {
-      "standard": "./chair_made_of_metal_and_wood.glb"
-    }
-  },
-  {
     "id": 6,
     "name": "Виноградник",
     "price": "18 000 грн",
@@ -66,18 +55,6 @@ export const products = [
     "baseModel": "./single_slope_carport.glb",
     "variants": {
       "standard": "./single_slope_carport.glb"
-    }
-  },
-  {
-    "id": 10,
-    "name": "Козирок 'Модерн'",
-    "price": "15 000 грн",
-    "placement": "wall",
-    "description": "Сучасний козирок з покращеним дизайном. Ідеальне доповнення для вашого фасаду.",
-    "image": "./Gemini_Generated_Image_sc71oesc71oesc71.png",
-    "baseModel": "./Kozurok.glb",
-    "variants": {
-      "standard": "./Kozurok.glb"
     }
   },
   {
