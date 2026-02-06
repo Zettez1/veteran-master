@@ -413,16 +413,13 @@
                     // 1. Get current SHA (if file exists)
                     let sha = null;
                     
-                    // Use ref=main to be explicit and avoid caching issues with ?t=...
-                    // We rely on Cache-Control headers for freshness
+                    // Use ref=main to be explicit and avoid caching issues
+                    // We rely on browser cache: 'no-store'
                     const getUrl = `${url}?ref=main`; 
                     
                     const getResponse = await fetch(getUrl, {
                         headers: { 
-                            'Authorization': `Bearer ${token}`,
-                            'Cache-Control': 'no-cache, no-store, must-revalidate',
-                            'Pragma': 'no-cache',
-                            'Expires': '0'
+                            'Authorization': `Bearer ${token}`
                         },
                         cache: 'no-store'
                     });
