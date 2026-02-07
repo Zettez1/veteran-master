@@ -116,8 +116,8 @@
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-yellow-200 to-brand-gold">ВАШОЇ ДІЛЯНКИ</span>
             </h1>
             <p class="text-lg text-gray-400 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-                Проєктування та виробництво металоконструкцій.
-                Інтерактивний 3D‑конфігуратор із підтримкою доповненої реальності.
+                Проєктування та виробництво металоконструкцій.<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400 font-normal">Інтерактивний 3D‑конфігуратор із підтримкою доповненої реальності.</span>
             </p>
             <div class="flex justify-center gap-6">
                 <a href="#catalog" class="bg-brand-gold text-black px-10 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300">
@@ -334,8 +334,8 @@
                 if (savedToken) tokenInput.value = savedToken;
             }
 
-            // Select cards
-            const cards = document.querySelectorAll('#products-grid > div');
+            // Select cards (Updated selector for nested grid)
+            const cards = document.querySelectorAll('#products-grid .glass');
             cards.forEach(card => {
                 const texts = card.querySelectorAll('h3, p.text-gray-400, span.text-brand-gold');
                 texts.forEach(t => {
@@ -541,7 +541,7 @@
             saveBtn.disabled = true;
 
             try {
-                const cards = document.querySelectorAll('#products-grid > div');
+                const cards = document.querySelectorAll('#products-grid .glass');
                 const newProducts = [];
                 
                 // Track upload promises
@@ -672,7 +672,7 @@
                 else if (name.includes('козирок')) catKey = 'visors';
                 else if (name.includes('ворот')) catKey = 'gates';
                 else if (name.includes('теплиця')) catKey = 'greenhouses';
-                else if (name.includes('стіл') || name.includes('стелаж') || name.includes('тумбочка')) catKey = 'tables';
+                else if (name.includes('стіл') || name.includes('стелаж') || name.includes('тумбочка') || name.includes('столик')) catKey = 'tables';
                 
                 categories[catKey].products.push(p);
             });
