@@ -407,34 +407,55 @@
         async function uploadFileToGitHub(filename, content, token, isBinary = false) {
             const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}`;
             const maxRetries = 3;
+            let useDirectoryScan = false; // Fallback strategy
             
             for (let i = 0; i < maxRetries; i++) {
                 try {
                     // 1. Get current SHA (if file exists)
                     let sha = null;
                     
-                    // Use ref=main to be explicit and avoid caching issues
-                    // We rely on browser cache: 'no-store'
-                    const getUrl = `${url}?ref=main`; 
-                    
-                    const getResponse = await fetch(getUrl, {
-                        headers: { 
-                            'Authorization': `Bearer ${token}`
-                        },
-                        cache: 'no-store'
-                    });
+                    if (useDirectoryScan) {
+                         // Fallback: List directory to find SHA
+                         try {
+                             console.log("Using directory scan fallback...");
+                             const pathParts = filename.split('/');
+                             const fileNameOnly = pathParts.pop();
+                             const dirPath = pathParts.join('/'); 
+                             const dirUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${dirPath}?ref=main`;
+                             
+                             const dirResp = await fetch(dirUrl, {
+                                headers: { 'Authorization': `Bearer ${token}` },
+                                cache: 'reload'
+                             });
+                             if (dirResp.ok) {
+                                 const files = await dirResp.json();
+                                 if (Array.isArray(files)) {
+                                     const fileData = files.find(f => f.name === fileNameOnly);
+                                     if (fileData) {
+                                        sha = fileData.sha;
+                                        console.log(`Found SHA via dir scan: ${sha}`);
+                                     }
+                                 }
+                             }
+                         } catch (e) { console.warn("Dir scan failed", e); }
+                    }
 
-                    if (getResponse.ok) {
-                        const data = await getResponse.json();
-                        sha = data.sha;
-                        console.log(`Got SHA for ${filename}: ${sha}`);
-                    } else if (getResponse.status === 404) {
-                        console.log(`File ${filename} not found (404), assuming new.`);
-                        sha = null; // New file
-                    } else {
-                        // Log unexpected status but retry
-                        console.warn(`Get SHA status: ${getResponse.status}`);
-                        throw new Error(`Get SHA Error: ${getResponse.status} ${getResponse.statusText}`);
+                    if (!sha) {
+                        // Standard direct fetch
+                        const getUrl = `${url}?ref=main`; 
+                        const getResponse = await fetch(getUrl, {
+                            headers: { 'Authorization': `Bearer ${token}` },
+                            cache: 'reload'
+                        });
+
+                        if (getResponse.ok) {
+                            const data = await getResponse.json();
+                            sha = data.sha;
+                            console.log(`Got SHA for ${filename}: ${sha}`);
+                        } else if (getResponse.status === 404) {
+                            console.log(`File ${filename} not found (404), assuming new.`);
+                            sha = null; 
+                        }
                     }
 
                     // 2. Prepare payload
@@ -460,11 +481,17 @@
                         return; // Success!
                     }
 
-                    // If 409 Conflict, Retry
-                    if (putResponse.status === 409) {
-                        console.warn(`SHA conflict for ${filename}, retrying... (${i+1}/${maxRetries})`);
-                        await new Promise(r => setTimeout(r, 1000)); // Wait 1s
-                        continue; // Retry loop
+                    // Handle 409 (Conflict) OR 422 (Missing SHA for existing file)
+                    if (putResponse.status === 409 || (putResponse.status === 422 && !sha)) {
+                        console.warn(`Conflict/MissingSHA for ${filename} (${putResponse.status}), retrying...`);
+                        
+                        // If 422, enable directory scan for next attempt
+                        if (putResponse.status === 422) {
+                            useDirectoryScan = true;
+                        }
+
+                        await new Promise(r => setTimeout(r, 1000)); 
+                        continue; 
                     }
 
                     // Other errors
@@ -476,7 +503,7 @@
                     throw new Error(`GitHub Error (${putResponse.status}): ${errorMsg}`);
 
                 } catch (err) {
-                    if (i === maxRetries - 1) throw err; // Throw on last attempt
+                    if (i === maxRetries - 1) throw err; 
                     console.warn(`Upload attempt ${i+1} failed: ${err.message}, retrying...`);
                     await new Promise(r => setTimeout(r, 1000));
                 }
