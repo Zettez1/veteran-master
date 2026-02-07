@@ -121,7 +121,7 @@ export const products = [
     "price": "18 500 грн",
     "placement": "wall",
     "description": "Великий козирок для широкого ганку. Надійний захист від негоди.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Visor+3.5x2.5",
+    "image": "./img_1770426528834.png",
     "baseModel": "./Koairok3.50na2.50.glb",
     "variants": {
       "standard": "./Koairok3.50na2.50.glb"
@@ -132,7 +132,7 @@ export const products = [
     "name": "Навіс 5.5х16м",
     "price": "180 000 грн",
     "description": "Масштабний навіс для комерційного або приватного використання. Максимальне покриття.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Carport+5.5x16",
+    "image": "./img_1770426528854.png",
     "baseModel": "./naves5.50na16m.glb",
     "variants": {
       "standard": "./naves5.50na16m.glb"
@@ -143,7 +143,7 @@ export const products = [
     "name": "Навіс 7х10м",
     "price": "145 000 грн",
     "description": "Просторий навіс для великого двору. Ідеально для паркування кількох авто.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Carport+7x10",
+    "image": "./img_1770426528855.png",
     "baseModel": "./naves7na10m.glb",
     "variants": {
       "standard": "./naves7na10m.glb"
@@ -154,7 +154,7 @@ export const products = [
     "name": "Стелаж 0.32х1.10м",
     "price": "4 200 грн",
     "description": "Компактний металевий стелаж. Зручне зберігання для дому та гаражу.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Rack+0.32x1.10",
+    "image": "./img_1770426528855.png",
     "baseModel": "./stelazh0.32na1.10.glb",
     "variants": {
       "standard": "./stelazh0.32na1.10.glb"
@@ -165,7 +165,7 @@ export const products = [
     "name": "Стіл 1.4х0.70м",
     "price": "8 500 грн",
     "description": "Універсальний стіл на металевому каркасі. Міцна стільниця та стійка конструкція.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+1.4x0.7",
+    "image": "./img_1770426528856.png",
     "baseModel": "./stol1.4na0.70.glb",
     "variants": {
       "standard": "./stol1.4na0.70.glb"
