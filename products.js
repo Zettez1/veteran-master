@@ -94,7 +94,7 @@ export const products = [
     "price": "16 500 грн",
     "placement": "wall",
     "description": "Елітний козирок з вишуканим кованим візерунком. Підкреслить статус вашого будинку.",
-    "image": "./img_1770419582793.png",
+    "image": "./img_1770431179342.png",
     "baseModel": "./Kozurok2.glb",
     "variants": {
       "standard": "./Kozurok2.glb"
