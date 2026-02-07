@@ -114,5 +114,204 @@ export const products = [
     "variants": {
       "standard": "./naves6_4.glb"
     }
+  },
+  {
+    "id": 16,
+    "name": "Козирок 3.5x2.5м",
+    "price": "18 500 грн",
+    "placement": "wall",
+    "description": "Великий козирок для широкого ганку. Надійний захист від негоди.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Visor+3.5x2.5",
+    "baseModel": "./Koairok3.50na2.50.glb",
+    "variants": {
+      "standard": "./Koairok3.50na2.50.glb"
+    }
+  },
+  {
+    "id": 17,
+    "name": "Навіс 5.5х16м",
+    "price": "180 000 грн",
+    "description": "Масштабний навіс для комерційного або приватного використання. Максимальне покриття.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Carport+5.5x16",
+    "baseModel": "./naves5.50na16m.glb",
+    "variants": {
+      "standard": "./naves5.50na16m.glb"
+    }
+  },
+  {
+    "id": 18,
+    "name": "Навіс 7х10м",
+    "price": "145 000 грн",
+    "description": "Просторий навіс для великого двору. Ідеально для паркування кількох авто.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Carport+7x10",
+    "baseModel": "./naves7na10m.glb",
+    "variants": {
+      "standard": "./naves7na10m.glb"
+    }
+  },
+  {
+    "id": 19,
+    "name": "Стелаж 0.32х1.10м",
+    "price": "4 200 грн",
+    "description": "Компактний металевий стелаж. Зручне зберігання для дому та гаражу.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Rack+0.32x1.10",
+    "baseModel": "./stelazh0.32na1.10.glb",
+    "variants": {
+      "standard": "./stelazh0.32na1.10.glb"
+    }
+  },
+  {
+    "id": 20,
+    "name": "Стіл 1.4х0.70м",
+    "price": "8 500 грн",
+    "description": "Універсальний стіл на металевому каркасі. Міцна стільниця та стійка конструкція.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+1.4x0.7",
+    "baseModel": "./stol1.4na0.70.glb",
+    "variants": {
+      "standard": "./stol1.4na0.70.glb"
+    }
+  },
+  {
+    "id": 21,
+    "name": "Стіл 1.5х0.90м",
+    "price": "9 200 грн",
+    "description": "Зручний обідній або робочий стіл. Сучасний дизайн та якісні матеріали.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+1.5x0.9",
+    "baseModel": "./stol1.50na0.90.glb",
+    "variants": {
+      "standard": "./stol1.50na0.90.glb"
+    }
+  },
+  {
+    "id": 22,
+    "name": "Стіл Лофт 1.7х0.80м",
+    "price": "11 500 грн",
+    "description": "Стильний стіл у стилі Лофт. Ідеально підходить для сучасних інтер'єрів.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+Loft+1.7",
+    "baseModel": "./stol1.70na0.80loft.glb",
+    "variants": {
+      "standard": "./stol1.70na0.80loft.glb"
+    }
+  },
+  {
+    "id": 23,
+    "name": "Стіл 2.40х0.85м",
+    "price": "14 800 грн",
+    "description": "Великий стіл для переговорів або великої родини. Масивна та надійна конструкція.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+2.4x0.85",
+    "baseModel": "./Stol2.40na0.85.glb",
+    "variants": {
+      "standard": "./Stol2.40na0.85.glb"
+    }
+  },
+  {
+    "id": 24,
+    "name": "Стіл 2х0.70м",
+    "price": "12 500 грн",
+    "description": "Довгий та вузький стіл, зручний для офісів або майстерень.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+2x0.7",
+    "baseModel": "./stol2m_na0.70.glb",
+    "variants": {
+      "standard": "./stol2m_na0.70.glb"
+    }
+  },
+  {
+    "id": 25,
+    "name": "Стіл 2х0.95м",
+    "price": "13 200 грн",
+    "description": "Просторий стіл стандартної висоти. Відмінний вибір для вітальні.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+2x0.95",
+    "baseModel": "./stol2na0.95.glb",
+    "variants": {
+      "standard": "./stol2na0.95.glb"
+    }
+  },
+  {
+    "id": 26,
+    "name": "Стіл Лофт 2х0.95м",
+    "price": "13 800 грн",
+    "description": "Варіант столу 2х0.95м у виконанні Лофт. Грубі форми та індустріальний шарм.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+Loft+2x0.95",
+    "baseModel": "./stol2na0.95loft.glb",
+    "variants": {
+      "standard": "./stol2na0.95loft.glb"
+    }
+  },
+  {
+    "id": 27,
+    "name": "Стіл 3.18х1.22м",
+    "price": "22 000 грн",
+    "description": "Гігантський стіл для банкетів або конференц-залів. Максимальна місткість.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+3.18x1.22",
+    "baseModel": "./stol3.18na1.22.glb",
+    "variants": {
+      "standard": "./stol3.18na1.22.glb"
+    }
+  },
+  {
+    "id": 28,
+    "name": "Журнальний стіл 0.4х0.4м",
+    "price": "3 500 грн",
+    "description": "Компактний журнальний столик. Елегантне доповнення до дивану.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Coffee+Table",
+    "baseModel": "./stolzhurnal0.40na0.40.glb",
+    "variants": {
+      "standard": "./stolzhurnal0.40na0.40.glb"
+    }
+  },
+  {
+    "id": 29,
+    "name": "Приліжковий столик",
+    "price": "3 800 грн",
+    "description": "Зручний столик для спальні. Ідеальна висота та розмір.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Bedside+Table",
+    "baseModel": "./stolzhurnal0.40na0.40prikrovatnuy.glb",
+    "variants": {
+      "standard": "./stolzhurnal0.40na0.40prikrovatnuy.glb"
+    }
+  },
+  {
+    "id": 30,
+    "name": "Теплиця 6х3м",
+    "price": "45 000 грн",
+    "description": "Класична теплиця для вашого саду. Міцний каркас під полікарбонат.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Greenhouse+6x3",
+    "baseModel": "./Teplica6na3.glb",
+    "variants": {
+      "standard": "./Teplica6na3.glb"
+    }
+  },
+  {
+    "id": 31,
+    "name": "Теплиця Мітлайдера 6х3м",
+    "price": "52 000 грн",
+    "description": "Теплиця за технологією Мітлайдера. Покращена вентиляція та мікроклімат.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Mitlaider+6x3",
+    "baseModel": "./Teplica_Mitlaider6x3.glb",
+    "variants": {
+      "standard": "./Teplica_Mitlaider6x3.glb"
+    }
+  },
+  {
+    "id": 32,
+    "name": "Тумбочка 0.40х0.48м",
+    "price": "4 500 грн",
+    "description": "Металева тумбочка для зберігання дрібниць. Практичність та стиль.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Nightstand",
+    "baseModel": "./Tumbocka0.40na0.48.glb",
+    "variants": {
+      "standard": "./Tumbocka0.40na0.48.glb"
+    }
+  },
+  {
+    "id": 33,
+    "name": "Ворота 2.60х2.30м",
+    "price": "28 000 грн",
+    "description": "Надійні розпашні ворота. Якісна фурнітура та довговічне покриття.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Gate+2.6x2.3",
+    "baseModel": "./Vorota2.60_2.30_3.glb",
+    "variants": {
+      "standard": "./Vorota2.60_2.30_3.glb"
+    }
   }
 ];
