@@ -79,10 +79,11 @@
                 <span class="tracking-[0.15em]">ВЕТЕРАН-МАЙСТЕР</span>
             </div>
             <nav class="hidden md:flex space-x-8 text-xs font-bold tracking-widest uppercase items-center">
+                <!-- Catalog Dropdown -->
                 <div class="relative group">
-                    <a href="#catalog" class="hover:text-brand-gold transition-colors duration-300 py-6 block flex items-center gap-1">
+                    <a href="#catalog" class="text-brand-gold border-b-2 border-brand-gold pb-1 hover:text-white hover:border-white transition-all duration-300 py-6 block flex items-center gap-2 transform group-hover:scale-105">
                         Каталог
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-50 group-hover:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-100 group-hover:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </a>
@@ -95,9 +96,31 @@
                         <a href="#category-other" class="block px-6 py-4 hover:bg-white/5 hover:text-brand-gold transition-colors">Інше</a>
                     </div>
                 </div>
-                <a href="#" class="hover:text-brand-gold transition-colors duration-300">Технології</a>
-                <a href="#" class="hover:text-brand-gold transition-colors duration-300">Портфоліо</a>
-                <a href="#" class="hover:text-brand-gold transition-colors duration-300">Контакти</a>
+
+                <!-- Contacts Dropdown -->
+                <div class="relative group">
+                    <a href="#contacts" class="text-white hover:text-brand-gold transition-colors duration-300 py-6 block flex items-center gap-1">
+                        Контакти
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-50 group-hover:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </a>
+                    <div class="absolute top-full right-0 md:left-auto md:right-0 lg:left-0 mt-0 w-72 bg-[#1a1a1a]/95 backdrop-blur-md border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.8)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 rounded-b-sm overflow-hidden z-50">
+                        <div class="px-6 py-4 border-b border-white/5">
+                            <p class="text-[10px] text-gray-500 mb-1">Телефон</p>
+                            <a href="tel:+380981062399" class="text-brand-gold font-bold hover:text-white transition-colors block">+380 98 106 23 99</a>
+                            <p class="text-xs text-gray-400 mt-1">Сергій</p>
+                        </div>
+                        <a href="https://www.facebook.com/friends/suggestions/?profile_id=100003528726256" target="_blank" class="block px-6 py-4 hover:bg-white/5 hover:text-brand-gold border-b border-white/5 transition-colors flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                            Facebook
+                        </a>
+                        <a href="https://www.instagram.com/veteran_master_zt/" target="_blank" class="block px-6 py-4 hover:bg-white/5 hover:text-brand-gold transition-colors flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            Instagram
+                        </a>
+                    </div>
+                </div>
             </nav>
             <button class="bg-brand-gold text-black px-6 py-2 rounded-sm font-bold text-xs uppercase tracking-widest hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
                 Залишити заявку
