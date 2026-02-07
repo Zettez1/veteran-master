@@ -1,41 +1,5 @@
 export const products = [
   {
-    "id": 3,
-    "name": "Відкатні ворота 4х1,7",
-    "price": "від 51 000 грн",
-    "description": "Відкатні ворота з автоматикою. Сучасний стиль, безпека та довговічність.",
-    "image": "./img_1770083820530.png",
-    "baseModel": "./vorota.glb",
-    "variants": {
-      "standard": "./vorota.glb"
-    }
-  },
-  {
-    "id": 6,
-    "name": "Виноградник",
-    "price": "18 000 грн",
-    "description": "Міцна металева конструкція для підтримки виноградної лози. Створює затишну тінь та прикрашає ділянку.",
-    "image": "./Vinogradnik.png",
-    "baseModel": "./vineyard_grey.glb",
-    "variants": {
-      "grey": "./vineyard_grey.glb",
-      "black": "./vineyard_black.glb",
-      "graphite": "./vineyard_graphite.glb?v=2"
-    }
-  },
-  {
-    "id": 7,
-    "name": "Козирок ",
-    "price": "12 000 грн",
-    "placement": "wall",
-    "description": "Стильний та надійний козирок для захисту входу від опадів. Металевий каркас, сучасний дизайн.",
-    "image": "./img_1770082593243.png",
-    "baseModel": "./visor.glb",
-    "variants": {
-      "standard": "./visor.glb"
-    }
-  },
-  {
     "id": 8,
     "name": "Навіс 'Комфорт' 5х4м",
     "price": "55 000 грн",
@@ -55,6 +19,73 @@ export const products = [
     "baseModel": "./single_slope_carport.glb",
     "variants": {
       "standard": "./single_slope_carport.glb"
+    }
+  },
+  {
+    "id": 14,
+    "name": "Навіс 'Гранд'",
+    "price": "62 000 грн",
+    "description": "Великий навіс для двох автомобілів. Посилена конструкція та довговічні матеріали.",
+    "image": "./img_1770420300446.png",
+    "baseModel": "./Naves22.glb",
+    "variants": {
+      "standard": "./Naves22.glb"
+    }
+  },
+  {
+    "id": 15,
+    "name": "Навіс 6х4м",
+    "price": "58 000 грн",
+    "description": "Популярний розмір 6 на 4 метри. Оптимальне співвідношення ціни та якості.",
+    "image": "./img_1770420300447.png",
+    "baseModel": "./naves6_4.glb",
+    "variants": {
+      "standard": "./naves6_4.glb"
+    }
+  },
+  {
+    "id": 17,
+    "name": "Навіс 5.5х16м",
+    "price": "180 000 грн",
+    "description": "Масштабний навіс для комерційного або приватного використання. Максимальне покриття.",
+    "image": "./img_1770426528854.png",
+    "baseModel": "./naves5.50na16m.glb",
+    "variants": {
+      "standard": "./naves5.50na16m.glb"
+    }
+  },
+  {
+    "id": 18,
+    "name": "Навіс 7х10м",
+    "price": "145 000 грн",
+    "description": "Просторий навіс для великого двору. Ідеально для паркування кількох авто.",
+    "image": "./img_1770429643389.png",
+    "baseModel": "./naves7na10m.glb",
+    "variants": {
+      "standard": "./naves7na10m.glb"
+    }
+  },
+  {
+    "id": 34,
+    "name": "Навіс 10х6м",
+    "price": "165 000 грн",
+    "description": "Великий навіс для паркування або складу. Надійна фермова конструкція.",
+    "image": "./img_1770429643390.png",
+    "baseModel": "./naves10x6.glb",
+    "variants": {
+      "standard": "./naves10x6.glb"
+    }
+  },
+  {
+    "id": 7,
+    "name": "Козирок ",
+    "price": "12 000 грн",
+    "placement": "wall",
+    "description": "Стильний та надійний козирок для захисту входу від опадів. Металевий каркас, сучасний дизайн.",
+    "image": "./img_1770082593243.png",
+    "baseModel": "./visor.glb",
+    "variants": {
+      "standard": "./visor.glb"
     }
   },
   {
@@ -94,28 +125,6 @@ export const products = [
     }
   },
   {
-    "id": 14,
-    "name": "Навіс 'Гранд'",
-    "price": "62 000 грн",
-    "description": "Великий навіс для двох автомобілів. Посилена конструкція та довговічні матеріали.",
-    "image": "./img_1770420300446.png",
-    "baseModel": "./Naves22.glb",
-    "variants": {
-      "standard": "./Naves22.glb"
-    }
-  },
-  {
-    "id": 15,
-    "name": "Навіс 6х4м",
-    "price": "58 000 грн",
-    "description": "Популярний розмір 6 на 4 метри. Оптимальне співвідношення ціни та якості.",
-    "image": "./img_1770420300447.png",
-    "baseModel": "./naves6_4.glb",
-    "variants": {
-      "standard": "./naves6_4.glb"
-    }
-  },
-  {
     "id": 16,
     "name": "Козирок 3.5x2.5м",
     "price": "18 500 грн",
@@ -128,25 +137,36 @@ export const products = [
     }
   },
   {
-    "id": 17,
-    "name": "Навіс 5.5х16м",
-    "price": "180 000 грн",
-    "description": "Масштабний навіс для комерційного або приватного використання. Максимальне покриття.",
-    "image": "./img_1770426528854.png",
-    "baseModel": "./naves5.50na16m.glb",
+    "id": 3,
+    "name": "Відкатні ворота 4х1,7",
+    "price": "від 51 000 грн",
+    "description": "Відкатні ворота з автоматикою. Сучасний стиль, безпека та довговічність.",
+    "image": "./img_1770083820530.png",
+    "baseModel": "./vorota.glb",
     "variants": {
-      "standard": "./naves5.50na16m.glb"
+      "standard": "./vorota.glb"
     }
   },
   {
-    "id": 18,
-    "name": "Навіс 7х10м",
-    "price": "145 000 грн",
-    "description": "Просторий навіс для великого двору. Ідеально для паркування кількох авто.",
-    "image": "./img_1770426528855.png",
-    "baseModel": "./naves7na10m.glb",
+    "id": 30,
+    "name": "Теплиця 6х3м",
+    "price": "45 000 грн",
+    "description": "Класична теплиця для вашого саду. Міцний каркас під полікарбонат.",
+    "image": "./img_1770429643391.png",
+    "baseModel": "./Teplica6na3.glb",
     "variants": {
-      "standard": "./naves7na10m.glb"
+      "standard": "./Teplica6na3.glb"
+    }
+  },
+  {
+    "id": 31,
+    "name": "Теплиця Mini 6х3м",
+    "price": "52 000 грн",
+    "description": "Теплиця за технологією . Покращена вентиляція та мікроклімат.",
+    "image": "./img_1770429643393.png",
+    "baseModel": "./Teplica_Mitlaider6x3.glb",
+    "variants": {
+      "standard": "./Teplica_Mitlaider6x3.glb"
     }
   },
   {
@@ -242,7 +262,7 @@ export const products = [
     "name": "Стіл 3.18х1.22м",
     "price": "22 000 грн",
     "description": "Гігантський стіл для банкетів або конференц-залів. Максимальна місткість.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+3.18x1.22",
+    "image": "./img_1770429643394.png",
     "baseModel": "./stol3.18na1.22.glb",
     "variants": {
       "standard": "./stol3.18na1.22.glb"
@@ -253,7 +273,7 @@ export const products = [
     "name": "Журнальний стіл 0.4х0.4м",
     "price": "3 500 грн",
     "description": "Компактний журнальний столик. Елегантне доповнення до дивану.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Coffee+Table",
+    "image": "./img_1770429643395.png",
     "baseModel": "./stolzhurnal0.40na0.40.glb",
     "variants": {
       "standard": "./stolzhurnal0.40na0.40.glb"
@@ -264,32 +284,10 @@ export const products = [
     "name": "Приліжковий столик",
     "price": "3 800 грн",
     "description": "Зручний столик для спальні. Ідеальна висота та розмір.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Bedside+Table",
+    "image": "./img_1770429643396.png",
     "baseModel": "./stolzhurnal0.40na0.40prikrovatnuy.glb",
     "variants": {
       "standard": "./stolzhurnal0.40na0.40prikrovatnuy.glb"
-    }
-  },
-  {
-    "id": 30,
-    "name": "Теплиця 6х3м",
-    "price": "45 000 грн",
-    "description": "Класична теплиця для вашого саду. Міцний каркас під полікарбонат.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Greenhouse+6x3",
-    "baseModel": "./Teplica6na3.glb",
-    "variants": {
-      "standard": "./Teplica6na3.glb"
-    }
-  },
-  {
-    "id": 31,
-    "name": "Теплиця Мітлайдера 6х3м",
-    "price": "52 000 грн",
-    "description": "Теплиця за технологією Мітлайдера. Покращена вентиляція та мікроклімат.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Mitlaider+6x3",
-    "baseModel": "./Teplica_Mitlaider6x3.glb",
-    "variants": {
-      "standard": "./Teplica_Mitlaider6x3.glb"
     }
   },
   {
@@ -297,32 +295,23 @@ export const products = [
     "name": "Тумбочка 0.40х0.48м",
     "price": "4 500 грн",
     "description": "Металева тумбочка для зберігання дрібниць. Практичність та стиль.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Nightstand",
+    "image": "./img_1770429643396.png",
     "baseModel": "./Tumbocka0.40na0.48.glb",
     "variants": {
       "standard": "./Tumbocka0.40na0.48.glb"
     }
   },
   {
-    "id": 33,
-    "name": "Ворота 2.60х2.30м",
-    "price": "28 000 грн",
-    "description": "Надійні розпашні ворота. Якісна фурнітура та довговічне покриття.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Gate+2.6x2.3",
-    "baseModel": "./Vorota2.60_2.30_3.glb",
+    "id": 6,
+    "name": "Виноградник",
+    "price": "18 000 грн",
+    "description": "Міцна металева конструкція для підтримки виноградної лози. Створює затишну тінь та прикрашає ділянку.",
+    "image": "./Vinogradnik.png",
+    "baseModel": "./vineyard_grey.glb",
     "variants": {
-      "standard": "./Vorota2.60_2.30_3.glb"
-    }
-  },
-  {
-    "id": 34,
-    "name": "Навіс 10х6м",
-    "price": "165 000 грн",
-    "description": "Великий навіс для паркування або складу. Надійна фермова конструкція.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Carport+10x6",
-    "baseModel": "./naves10x6.glb",
-    "variants": {
-      "standard": "./naves10x6.glb"
+      "grey": "./vineyard_grey.glb",
+      "black": "./vineyard_black.glb",
+      "graphite": "./vineyard_graphite.glb?v=2"
     }
   }
 ];
