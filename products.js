@@ -176,7 +176,7 @@ export const products = [
     "name": "Стіл 1.5х0.90м",
     "price": "9 200 грн",
     "description": "Зручний обідній або робочий стіл. Сучасний дизайн та якісні матеріали.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+1.5x0.9",
+    "image": "./img_1770427147197.png",
     "baseModel": "./stol1.50na0.90.glb",
     "variants": {
       "standard": "./stol1.50na0.90.glb"
@@ -187,7 +187,7 @@ export const products = [
     "name": "Стіл Лофт 1.7х0.80м",
     "price": "11 500 грн",
     "description": "Стильний стіл у стилі Лофт. Ідеально підходить для сучасних інтер'єрів.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+Loft+1.7",
+    "image": "./img_1770427147198.png",
     "baseModel": "./stol1.70na0.80loft.glb",
     "variants": {
       "standard": "./stol1.70na0.80loft.glb"
@@ -198,7 +198,7 @@ export const products = [
     "name": "Стіл 2.40х0.85м",
     "price": "14 800 грн",
     "description": "Великий стіл для переговорів або великої родини. Масивна та надійна конструкція.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+2.4x0.85",
+    "image": "./img_1770427147199.png",
     "baseModel": "./Stol2.40na0.85.glb",
     "variants": {
       "standard": "./Stol2.40na0.85.glb"
@@ -209,7 +209,7 @@ export const products = [
     "name": "Стіл 2х0.70м",
     "price": "12 500 грн",
     "description": "Довгий та вузький стіл, зручний для офісів або майстерень.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+2x0.7",
+    "image": "./img_1770427147200.png",
     "baseModel": "./stol2m_na0.70.glb",
     "variants": {
       "standard": "./stol2m_na0.70.glb"
@@ -220,7 +220,7 @@ export const products = [
     "name": "Стіл 2х0.95м",
     "price": "13 200 грн",
     "description": "Просторий стіл стандартної висоти. Відмінний вибір для вітальні.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+2x0.95",
+    "image": "./img_1770427147201.png",
     "baseModel": "./stol2na0.95.glb",
     "variants": {
       "standard": "./stol2na0.95.glb"
@@ -231,7 +231,7 @@ export const products = [
     "name": "Стіл Лофт 2х0.95м",
     "price": "13 800 грн",
     "description": "Варіант столу 2х0.95м у виконанні Лофт. Грубі форми та індустріальний шарм.",
-    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Table+Loft+2x0.95",
+    "image": "./img_1770427147201.png",
     "baseModel": "./stol2na0.95loft.glb",
     "variants": {
       "standard": "./stol2na0.95loft.glb"
