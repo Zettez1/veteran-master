@@ -313,5 +313,16 @@ export const products = [
     "variants": {
       "standard": "./Vorota2.60_2.30_3.glb"
     }
+  },
+  {
+    "id": 34,
+    "name": "Навіс 10х6м",
+    "price": "165 000 грн",
+    "description": "Великий навіс для паркування або складу. Надійна фермова конструкція.",
+    "image": "https://placehold.co/600x400/1a1a1a/D4AF37?text=Carport+10x6",
+    "baseModel": "./naves10x6.glb",
+    "variants": {
+      "standard": "./naves10x6.glb"
+    }
   }
 ];
