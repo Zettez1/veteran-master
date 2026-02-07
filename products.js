@@ -121,7 +121,7 @@ export const products = [
     "price": "18 500 грн",
     "placement": "wall",
     "description": "Великий козирок для широкого ганку. Надійний захист від негоди.",
-    "image": "./img_1770426528834.png",
+    "image": "./img_1770427887449.png",
     "baseModel": "./Koairok3.50na2.50.glb",
     "variants": {
       "standard": "./Koairok3.50na2.50.glb"
@@ -187,7 +187,7 @@ export const products = [
     "name": "Стіл Лофт 1.7х0.80м",
     "price": "11 500 грн",
     "description": "Стильний стіл у стилі Лофт. Ідеально підходить для сучасних інтер'єрів.",
-    "image": "./img_1770427147198.png",
+    "image": "./img_1770427887451.png",
     "baseModel": "./stol1.70na0.80loft.glb",
     "variants": {
       "standard": "./stol1.70na0.80loft.glb"
@@ -220,7 +220,7 @@ export const products = [
     "name": "Стіл 2х0.95м",
     "price": "13 200 грн",
     "description": "Просторий стіл стандартної висоти. Відмінний вибір для вітальні.",
-    "image": "./img_1770427147201.png",
+    "image": "./img_1770427887452.png",
     "baseModel": "./stol2na0.95.glb",
     "variants": {
       "standard": "./stol2na0.95.glb"
