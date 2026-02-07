@@ -1194,6 +1194,12 @@
                     body: formData
                 });
 
+                // Check if response is ok (status 200-299)
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server Error: ${response.status} ${response.statusText} - ${errorText}`);
+                }
+
                 const result = await response.json();
 
                 if (result.success) {
@@ -1211,7 +1217,8 @@
                 }
             } catch (error) {
                 console.error("Submission Error:", error);
-                alert("⚠️ Помилка відправки. Спробуйте ще раз або зателефонуйте нам.");
+                // Show more detailed error to user for debugging
+                alert(`⚠️ Помилка відправки: ${error.message}\n\nПереконайтеся, що:\n1. Бот доданий у групу\n2. Сайт запущено як Web Service (не Static Site)`);
             } finally {
                 btn.innerText = originalText;
                 btn.disabled = false;
