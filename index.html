@@ -341,6 +341,27 @@
                             </div>
                         </div>
 
+                        <!-- Preferred Time -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Зручний час для дзвінка</label>
+                            <div class="flex items-center gap-4">
+                                <div class="flex-1">
+                                    <label for="req-time-from" class="text-[10px] text-gray-500 block mb-1 uppercase tracking-wider">З</label>
+                                    <input type="time" id="req-time-from" class="w-full bg-white/5 border border-white/10 rounded-sm px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-gold transition-colors">
+                                </div>
+                                <div class="flex-1">
+                                    <label for="req-time-to" class="text-[10px] text-gray-500 block mb-1 uppercase tracking-wider">До</label>
+                                    <input type="time" id="req-time-to" class="w-full bg-white/5 border border-white/10 rounded-sm px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-gold transition-colors">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comments -->
+                        <div>
+                            <label for="req-comment" class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Коментар до замовлення</label>
+                            <textarea id="req-comment" rows="3" class="w-full bg-white/5 border border-white/10 rounded-sm px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-gold transition-colors custom-scrollbar resize-none" placeholder="Додаткові побажання..."></textarea>
+                        </div>
+
                         <!-- File Upload -->
                         <div>
                             <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Прикріпити фото (до 3-х)</label>
@@ -1119,14 +1140,24 @@
             event.preventDefault();
             
             // Gather data
-            const formData = {
-                name: document.getElementById('req-name').value,
-                phone: document.getElementById('req-phone').value,
-                messengers: Array.from(document.querySelectorAll('input[name="messenger"]:checked')).map(cb => cb.value),
-                files: fileInput.files.length // Just count for now
-            };
+            const name = document.getElementById('req-name').value;
+            const phone = document.getElementById('req-phone').value;
+            const messengers = Array.from(document.querySelectorAll('input[name="messenger"]:checked')).map(cb => cb.value).join(', ');
+            const timeFrom = document.getElementById('req-time-from').value;
+            const timeTo = document.getElementById('req-time-to').value;
+            const comment = document.getElementById('req-comment').value;
+            const files = fileInput.files;
 
-            console.log("Form Submitted:", formData);
+            // Format Message for Console/Future Bot
+            let message = `New Request:\n`;
+            message += `Name: ${name}\n`;
+            message += `Phone: ${phone}\n`;
+            if (messengers) message += `Messengers: ${messengers}\n`;
+            if (timeFrom || timeTo) message += `Time: ${timeFrom || '?'} - ${timeTo || '?'}\n`;
+            if (comment) message += `Comment: ${comment}\n`;
+
+            console.log("Form Data:", { name, phone, messengers, timeFrom, timeTo, comment, fileCount: files.length });
+            console.log("Formatted Message:", message);
             
             // Here you would send data to Telegram Bot API
             // For now, just simulate success
