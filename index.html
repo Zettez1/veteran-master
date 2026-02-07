@@ -1091,6 +1091,7 @@
         const requestModal = document.getElementById('request-modal');
         const fileInput = document.getElementById('req-files');
         const previewContainer = document.getElementById('file-preview-container');
+        let selectedFiles = [];
 
         window.openRequestModal = () => {
             // If opening from product modal, we might want to keep product modal open or close it?
@@ -1109,58 +1110,54 @@
         };
 
         window.handleFileSelect = (event) => {
-            const files = Array.from(event.target.files);
+            const newFiles = Array.from(event.target.files);
             
-            // Limit to 3 files
-            if (files.length > 3) {
+            // Calculate total if we add these
+            if (selectedFiles.length + newFiles.length > 3) {
                 alert("Можна завантажити максимум 3 фото");
-                fileInput.value = ''; // Clear selection
-                previewContainer.innerHTML = '';
+                // Don't clear existing selection if just adding
+                event.target.value = ''; 
                 return;
             }
 
+            // Add new files to our array
+            selectedFiles = [...selectedFiles, ...newFiles];
+            renderPreviews();
+            
+            // Reset input so the same file can be selected again if needed
+            event.target.value = '';
+        };
+
+        function renderPreviews() {
             previewContainer.innerHTML = ''; // Clear previous previews
 
-            files.forEach(file => {
+            selectedFiles.forEach((file, index) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const div = document.createElement('div');
-                    div.className = 'relative aspect-square bg-white/5 rounded-sm overflow-hidden border border-white/10';
+                    div.className = 'relative w-20 h-20 bg-white/5 rounded-sm overflow-hidden border border-white/10 group shrink-0';
                     div.innerHTML = `
                         <img src="${e.target.result}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/20"></div>
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+                        <button onclick="window.removeFile(${index})" class="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white w-5 h-5 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 transform scale-75 group-hover:scale-100" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
                     `;
                     previewContainer.appendChild(div);
                 };
                 reader.readAsDataURL(file);
             });
+        }
+
+        window.removeFile = (index) => {
+            selectedFiles.splice(index, 1);
+            renderPreviews();
         };
 
-        window.submitRequest = (event) => {
+        window.submitRequest = async (event) => {
             event.preventDefault();
-            
-            // Gather data
-            const name = document.getElementById('req-name').value;
-            const phone = document.getElementById('req-phone').value;
-            const messengers = Array.from(document.querySelectorAll('input[name="messenger"]:checked')).map(cb => cb.value).join(', ');
-            const timeFrom = document.getElementById('req-time-from').value;
-            const timeTo = document.getElementById('req-time-to').value;
-            const comment = document.getElementById('req-comment').value;
-            const files = fileInput.files;
-
-            // Format Message for Console/Future Bot
-            let message = `New Request:\n`;
-            message += `Name: ${name}\n`;
-            message += `Phone: ${phone}\n`;
-            if (messengers) message += `Messengers: ${messengers}\n`;
-            if (timeFrom || timeTo) message += `Time: ${timeFrom || '?'} - ${timeTo || '?'}\n`;
-            if (comment) message += `Comment: ${comment}\n`;
-
-            console.log("Form Data:", { name, phone, messengers, timeFrom, timeTo, comment, fileCount: files.length });
-            console.log("Formatted Message:", message);
-            
-            // Here you would send data to Telegram Bot API
-            // For now, just simulate success
             
             const btn = event.target.querySelector('button[type="submit"]');
             const originalText = btn.innerText;
@@ -1168,19 +1165,57 @@
             btn.innerText = "Відправка...";
             btn.disabled = true;
 
-            setTimeout(() => {
-                alert("✅ Дякуємо! Ваша заявка прийнята. Ми зв'яжемося з вами найближчим часом.");
+            // Gather data
+            const name = document.getElementById('req-name').value;
+            const phone = document.getElementById('req-phone').value;
+            const messengers = Array.from(document.querySelectorAll('input[name="messenger"]:checked')).map(cb => cb.value).join(', ');
+            const timeFrom = document.getElementById('req-time-from').value;
+            const timeTo = document.getElementById('req-time-to').value;
+            const comment = document.getElementById('req-comment').value;
+
+            // Create FormData for backend
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('phone', phone);
+            formData.append('messengers', messengers);
+            formData.append('timeFrom', timeFrom);
+            formData.append('timeTo', timeTo);
+            formData.append('comment', comment);
+            
+            // Append files
+            selectedFiles.forEach(file => {
+                formData.append('photos', file);
+            });
+
+            try {
+                // Send to local backend
+                const response = await fetch('/api/send-request', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert("✅ Дякуємо! Ваша заявка прийнята. Ми зв'яжемося з вами найближчим часом.");
+                    closeRequestModal();
+                    event.target.reset();
+                    selectedFiles = []; // Clear files
+                    renderPreviews();
+                    
+                    if (!modal.classList.contains('hidden')) {
+                        closeModal();
+                    }
+                } else {
+                    throw new Error(result.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.error("Submission Error:", error);
+                alert("⚠️ Помилка відправки. Спробуйте ще раз або зателефонуйте нам.");
+            } finally {
                 btn.innerText = originalText;
                 btn.disabled = false;
-                closeRequestModal();
-                event.target.reset();
-                previewContainer.innerHTML = '';
-                
-                // Also close product modal if it was open
-                if (!modal.classList.contains('hidden')) {
-                    closeModal();
-                }
-            }, 1000);
+            }
         };
     </script>
 </body>
