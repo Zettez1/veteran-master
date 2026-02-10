@@ -218,7 +218,7 @@ export const products = [
     "name": "Трибуна 6м",
     "price": "45 000 грн",
     "description": "Мобільна трибуна для глядачів. Довжина 6 метрів.",
-    "image": "./img_1770687251808.png",
+    "image": "./img_1770687446946.png",
     "baseModel": "./Tribuna6m.glb",
     "variants": {
       "standard": "./Tribuna6m.glb"
