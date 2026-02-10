@@ -784,6 +784,7 @@
                 'visors': { label: 'Козирки', products: [] },
                 'gates': { label: 'Ворота', products: [] },
                 'greenhouses': { label: 'Теплиці', products: [] },
+                'gazebos': { label: 'Альтанки', products: [] },
                 'tables': { label: 'Столи та Меблі', products: [] },
                 'other': { label: 'Інше', products: [] }
             };
@@ -795,6 +796,7 @@
                 else if (name.includes('козирок')) catKey = 'visors';
                 else if (name.includes('ворот')) catKey = 'gates';
                 else if (name.includes('теплиця')) catKey = 'greenhouses';
+                else if (name.includes('альтанка') || name.includes('беседка') || name.includes('трибуна')) catKey = 'gazebos';
                 else if (name.includes('стіл') || name.includes('стелаж') || name.includes('тумбочка') || name.includes('столик')) catKey = 'tables';
                 
                 categories[catKey].products.push(p);
@@ -802,7 +804,7 @@
 
             // 2. Build HTML
             let html = '';
-            const order = ['carports', 'visors', 'gates', 'greenhouses', 'tables', 'other'];
+            const order = ['carports', 'visors', 'gates', 'greenhouses', 'gazebos', 'tables', 'other'];
 
             order.forEach(key => {
                 const cat = categories[key];
