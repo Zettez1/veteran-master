@@ -218,7 +218,7 @@ export const products = [
     "name": "Трибуна 6м",
     "price": "45 000 грн",
     "description": "Мобільна трибуна для глядачів. Довжина 6 метрів.",
-    "image": "./img_1770687446946.png",
+    "image": "./img_1770687748502.png",
     "baseModel": "./Tribuna6m.glb",
     "variants": {
       "standard": "./Tribuna6m.glb"
@@ -361,7 +361,7 @@ export const products = [
     "name": "Тумбочка 0.40х0.48м",
     "price": "4 500 грн",
     "description": "Металева тумбочка для зберігання дрібниць. Практичність та стиль.",
-    "image": "./img_1770429643396.png",
+    "image": "./img_1770687748503.png",
     "baseModel": "./Tumbocka0.40na0.48.glb",
     "variants": {
       "standard": "./Tumbocka0.40na0.48.glb"
