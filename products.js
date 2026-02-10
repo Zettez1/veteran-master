@@ -170,6 +170,72 @@ export const products = [
     }
   },
   {
+    "id": 35,
+    "name": "Альтанка 5х2.30м",
+    "price": "65 000 грн",
+    "description": "Простора альтанка для відпочинку на свіжому повітрі. Ідеально для дачі або саду.",
+    "image": "./img_1770687251804.png",
+    "baseModel": "./Altanka5na2.30.glb",
+    "variants": {
+      "standard": "./Altanka5na2.30.glb"
+    }
+  },
+  {
+    "id": 36,
+    "name": "Альтанка 1.80х2.00м",
+    "price": "35 000 грн",
+    "description": "Компактна альтанка, яка поміститься навіть на невеликій ділянці.",
+    "image": "./img_1770687251805.png",
+    "baseModel": "./Besedka1.80na200.glb",
+    "variants": {
+      "standard": "./Besedka1.80na200.glb"
+    }
+  },
+  {
+    "id": 37,
+    "name": "Альтанка 3х3м",
+    "price": "50 000 грн",
+    "description": "Класична квадратна альтанка. Зручна та функціональна.",
+    "image": "./img_1770687251806.png",
+    "baseModel": "./Besedka3na3.glb",
+    "variants": {
+      "standard": "./Besedka3na3.glb"
+    }
+  },
+  {
+    "id": 38,
+    "name": "Альтанка 6-гранна",
+    "price": "75 000 грн",
+    "description": "Елегантна шестигранна альтанка. Стане окрасою вашого ландшафту.",
+    "image": "./img_1770687251808.png",
+    "baseModel": "./Besedka6m6grannik.glb",
+    "variants": {
+      "standard": "./Besedka6m6grannik.glb"
+    }
+  },
+  {
+    "id": 39,
+    "name": "Трибуна 6м",
+    "price": "45 000 грн",
+    "description": "Мобільна трибуна для глядачів. Довжина 6 метрів.",
+    "image": "./img_1770687251808.png",
+    "baseModel": "./Tribuna6m.glb",
+    "variants": {
+      "standard": "./Tribuna6m.glb"
+    }
+  },
+  {
+    "id": 40,
+    "name": "Альтанка 1.70х1.90м",
+    "price": "32 000 грн",
+    "description": "Невелика затишна альтанка. Відмінний бюджетний варіант.",
+    "image": "./img_1770687251810.png",
+    "baseModel": "./altanka1.70na1.90.glb",
+    "variants": {
+      "standard": "./altanka1.70na1.90.glb"
+    }
+  },
+  {
     "id": 19,
     "name": "Стелаж 0.32х1.10м",
     "price": "4 200 грн",
@@ -312,72 +378,6 @@ export const products = [
       "grey": "./vineyard_grey.glb",
       "black": "./vineyard_black.glb",
       "graphite": "./vineyard_graphite.glb?v=2"
-    }
-  },
-  {
-    "id": 35,
-    "name": "Альтанка 5х2.30м",
-    "price": "65 000 грн",
-    "description": "Простора альтанка для відпочинку на свіжому повітрі. Ідеально для дачі або саду.",
-    "image": "./img_1770420300447.png",
-    "baseModel": "./Altanka5na2.30.glb",
-    "variants": {
-      "standard": "./Altanka5na2.30.glb"
-    }
-  },
-  {
-    "id": 36,
-    "name": "Альтанка 1.80х2.00м",
-    "price": "35 000 грн",
-    "description": "Компактна альтанка, яка поміститься навіть на невеликій ділянці.",
-    "image": "./img_1770420300447.png",
-    "baseModel": "./Besedka1.80na200.glb",
-    "variants": {
-      "standard": "./Besedka1.80na200.glb"
-    }
-  },
-  {
-    "id": 37,
-    "name": "Альтанка 3х3м",
-    "price": "50 000 грн",
-    "description": "Класична квадратна альтанка. Зручна та функціональна.",
-    "image": "./img_1770420300447.png",
-    "baseModel": "./Besedka3na3.glb",
-    "variants": {
-      "standard": "./Besedka3na3.glb"
-    }
-  },
-  {
-    "id": 38,
-    "name": "Альтанка 6-гранна",
-    "price": "75 000 грн",
-    "description": "Елегантна шестигранна альтанка. Стане окрасою вашого ландшафту.",
-    "image": "./img_1770420300447.png",
-    "baseModel": "./Besedka6m6grannik.glb",
-    "variants": {
-      "standard": "./Besedka6m6grannik.glb"
-    }
-  },
-  {
-    "id": 39,
-    "name": "Трибуна 6м",
-    "price": "45 000 грн",
-    "description": "Мобільна трибуна для глядачів. Довжина 6 метрів.",
-    "image": "./img_1770420300447.png",
-    "baseModel": "./Tribuna6m.glb",
-    "variants": {
-      "standard": "./Tribuna6m.glb"
-    }
-  },
-  {
-    "id": 40,
-    "name": "Альтанка 1.70х1.90м",
-    "price": "32 000 грн",
-    "description": "Невелика затишна альтанка. Відмінний бюджетний варіант.",
-    "image": "./img_1770420300447.png",
-    "baseModel": "./altanka1.70na1.90.glb",
-    "variants": {
-      "standard": "./altanka1.70na1.90.glb"
     }
   }
 ];
