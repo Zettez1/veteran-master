@@ -7,10 +7,10 @@ const fs = require('fs');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Telegram Config
-const token = '8542907147:AAHOdyMNxCZkDI0gRsxZkBq4Wvtmhb7enE4'; // Provided by user
-const chatId = '-1003407248691'; // Derived from https://t.me/c/3407248691/1
-const bot = new TelegramBot(token, { polling: false });
+// Telegram Config — from Railway Variables (fallback to hardcoded for local dev)
+const token = process.env.TELEGRAM_TOKEN || '8542907147:AAHOdyMNxCZkDI0gRsxZkBq4Wvtmhb7enE4';
+const chatId = process.env.TELEGRAM_CHAT_ID || '-1003407248691';
+const bot = token ? new TelegramBot(token, { polling: false }) : null;
 
 // Multer Config (Memory Storage to avoid disk cleanup)
 const upload = multer({ 
@@ -43,6 +43,7 @@ app.post('/api/send-request', upload.array('photos', 3), async (req, res) => {
         if (comment) message += `📝 *Коментар:* ${comment}\n`;
 
         // Send Text Message
+        if (!bot) throw new Error('Telegram not configured');
         await bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
 
         // Send Photos (if any)
